@@ -1,6 +1,0 @@
-1. Abre o arquivo
-2. Calcula a FFT
-	2.1. Extrai o valor absoluto
-	2.2. "Normaliza" - Divide pelo TAMANHO DA AMOSTRA (ESTUDAR ISSO)
-	2.3. Encontra as frequencias (eixo x)
-	2.4. Define um "escopo" - Até que ponto pegar os dados
