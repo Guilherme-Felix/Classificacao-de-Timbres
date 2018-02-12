@@ -17,12 +17,12 @@ def pre_processa(dados):
     cujo tamanho e' potencia de 2.
     E' extraido a parte central do array.
     '''
-    amostra = amostra[:,0]
-    fora = (dados.size - TAMANHO_IDEAL) / 2
+    dados = dados[:,0]
+    fora = np.abs(dados.size - TAMANHO_IDEAL) / 2
     dados = dados[fora:-fora]
     return dados
 
-def gera_fft(dados)
+def gera_fft(dados):
     '''
     Dado um array MONO que representa um audio, retorna sua fft,
     com seus coeficientes em modulo.
@@ -47,14 +47,24 @@ def normaliza(fft_dados, tam=TAMANHO_IDEAL):
 #
 ######################################################################
 
-conjuntoFFT = []
+conjuntoFFT = [] 
 
 for i in range ( len(arquivos) ):
-    sample_rate, amostra = wav.read(diretorio+arquivos[i])
-    amostra = pre_processa(amostra)
-    fft_amostra = gera_fft_norm(amostra)
-    conjuntoFFT.append(fft_amostra)
+    print i
 
-#clt = KMeans()
+    sample_rate, amostra = wav.read(diretorio+arquivos[i])
+
+    print diretorio+arquivos[i] , '\n' 
+
+    amostra = pre_processa(amostra)
+    
+    print amostra ,'\n'
+    
+    fft_amostra = gera_fft(amostra)
+    conjuntoFFT.append(fft_amostra)
+# CONFERIR O TAMANHO DE CADA AMOSTRA!!!! #
+conjuntoFFT = np.array(conjuntoFFT)
+
+clt = KMeans()
 #clt.fit(conjuntoFFT.T)
 
