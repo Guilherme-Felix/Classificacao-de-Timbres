@@ -4,22 +4,28 @@ import matplotlib.pyplot as pt
 import os 
 from sklearn.cluster import KMeans
 
-TAMANHO_IDEAL = 2**17
+TAMANHO_IDEAL = 2**16
 
 # lista com os nomes dos arquivos
 diretorio = 'AMOSTRAS/'
 arquivos = os.listdir(diretorio)
 arquivos.sort()
 
-def pre_processa(dados):
+def pre_processa(dados, left_channel=0, debug=False):
     '''
     Dado um array  que representa um a'udio, retorna o array 
     cujo tamanho e' potencia de 2.
     E' extraido a parte central do array.
     '''
-    dados = dados[:,0]
-    fora = np.abs(dados.size - TAMANHO_IDEAL) / 2
+    dados = dados[:,left_channel]
+    tam_amostra = len(dados)
+    fora = (tam_amostra - TAMANHO_IDEAL) / 2
     dados = dados[fora:-fora]
+    if( len(dados) % 2 == 1):
+    	dados = np.delete(dados, 0)
+    if (debug == True):
+    	print "Tamanho da amostra: ", tam_amostra
+    	print "Tamanho apos recorte: ", len(dados)
     return dados
 
 def gera_fft(dados):
@@ -56,15 +62,20 @@ for i in range ( len(arquivos) ):
 
     print diretorio+arquivos[i] , '\n' 
 
-    amostra = pre_processa(amostra)
+    amostra = pre_processa(amostra, debug=True)
     
     print amostra ,'\n'
     
     fft_amostra = gera_fft(amostra)
     conjuntoFFT.append(fft_amostra)
+
 # CONFERIR O TAMANHO DE CADA AMOSTRA!!!! #
 conjuntoFFT = np.array(conjuntoFFT)
-
+print "============================="
+print "FIM DO PROCEDIMENTO"
+print conjuntoFFT
 clt = KMeans()
-#clt.fit(conjuntoFFT.T)
+
+clt.fit(conjuntoFFT)
+
 
