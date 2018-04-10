@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.io import wavfile as wav
-import matplotlib.pyplot as pt
+import matplotlib.pyplot as plt
 import os 
 from sklearn.cluster import KMeans
 
@@ -42,7 +42,7 @@ def normaliza(fft_dados, tam=TAMANHO_IDEAL):
     '''
     Dado uma fft como entrada (e o tamanho da respectiva amostra) 
     retorna um array fft normalizado, ou seja, cada elemento do array
-    e dividido pelo tamanho da amostra. Tamanho padrao da amostra e 2^17
+    e dividido pelo tamanho da amostra. Tamanho padrao da amostra e 2^16
     '''
     fft_norm = [fft_dados[i] / tam for i in range( len(fft_dados) )]
     return fft_norm
@@ -74,8 +74,7 @@ conjuntoFFT = np.array(conjuntoFFT)
 print "============================="
 print "FIM DO PROCEDIMENTO"
 print conjuntoFFT
-clt = KMeans()
-
+clt = KMeans(n_clusters=8)
 clt.fit(conjuntoFFT)
 
 
