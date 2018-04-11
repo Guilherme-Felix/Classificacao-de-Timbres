@@ -1,13 +1,14 @@
 import numpy as np
 from scipy.io import wavfile as wav
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 import os 
 from sklearn.cluster import KMeans
 
 TAMANHO_IDEAL = 2**16
 
 # lista com os nomes dos arquivos
-diretorio = 'AMOSTRAS/'
+diretorio = 'AmostrasTratadas/'
 arquivos = os.listdir(diretorio)
 arquivos.sort()
 
@@ -67,14 +68,50 @@ for i in range ( len(arquivos) ):
     print amostra ,'\n'
     
     fft_amostra = gera_fft(amostra)
-    conjuntoFFT.append(fft_amostra)
+    fft_norm = normaliza(fft_amostra, len(fft_amostra))
+    conjuntoFFT.append(fft_norm)
 
 # CONFERIR O TAMANHO DE CADA AMOSTRA!!!! #
 conjuntoFFT = np.array(conjuntoFFT)
+
+max_idx = np.zeros(conjuntoFFT.shape[0])
+max_val = np.zeros(conjuntoFFT.shape[0])
+for row in range(conjuntoFFT.shape[0]):
+    max_idx[row] = np.argmax(conjuntoFFT[row])
+    max_val[row] = np.max(conjuntoFFT[row])
+
 print "============================="
 print "FIM DO PROCEDIMENTO"
-print conjuntoFFT
-clt = KMeans(n_clusters=8)
-clt.fit(conjuntoFFT)
 
+# Gera Estimadores - instancias do KMeans
+estimators = [ ('8 clusters', KMeans(n_clusters=8)), 
+			   ('11 clusters', KMeans(n_clusters=11)),
+			   ('13 clusters', KMeans(n_clusters=13))]
+
+#clt = KMeans(n_clusters=13)
+#clt.fit(conjuntoFFT)
+
+# Roda 3 estimadores 
+titles = ['8 clusters', '11 clusters', '13 clusters']
+fignum = 1
+for name, est in estimators:
+        print "Rodando KMeans para " + name
+	fig = plt.figure(fignum, figsize=(8,6))
+	ax = Axes3D(fig, rect=[0, 0, .95, 1], elev=48, azim=134)
+	
+	est.fit(conjuntoFFT)
+	labels = est.labels_
+	
+	ax.scatter(max_idx, max_val, c=labels.astype(np.float), edgecolor='k')
+	
+	ax.w_xaxis.set_ticklabels([])
+	ax.w_yaxis.set_ticklabels([])
+	ax.w_zaxis.set_ticklabels([])
+	ax.set_xlabel('Pos_Max_Coef.')
+	ax.set_ylabel('Max_Val_Coef.')
+	ax.set_title(titles[fignum - 1])
+        ax.dist = 12
+        fignum = fignum + 1
+	fig.show()
+	
 
