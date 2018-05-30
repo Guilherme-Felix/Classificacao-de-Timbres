@@ -39,3 +39,24 @@ def divide_em_frames(audio, samplerate, winlen=20e-3, winstep=10e-3):
     return frames
 
 
+def DFT(sinal):
+    '''
+    Determina os coeficientes de uma transformada discreta de Fourier (DFT) de um sinal.
+    Implementacao direta da definicao, sem otimizacao. Para uma implementacao otimizada
+    ver algoritmo de Cooley e Tukey, conhecido como transformada rapida de fourier (FFT).
+
+    :param sinal: Array contendo o sinal a ter determinado os coeficientes da transformada
+
+    :returns: Um numpy array contendo cada coeficiente complexo.
+    '''
+
+    N = len(sinal)
+    X = np.zeros(N, dtype=complex)
+    x = sinal
+    for k in range(N):
+        for n in range(N):
+            X[k] = X[k] + x[n]*(np.e**((-2*np.pi*1j*k*n)/N))
+
+    return X
+
+
