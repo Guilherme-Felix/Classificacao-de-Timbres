@@ -69,5 +69,17 @@ print dft_frames0_numpy
 for i in range(len(dft_frames0)/2):
     print dft_frames0[i],dft_frames0_numpy[i]
 
+# Estima o erro do valor obtido com a dct implementada diretamente e a da biblioteca numpy
+
+erro_medio_absoluto = np.abs((dft_frames0 - dft_frames0_numpy)/2)
+
+# Ordem de grandeza do erro, arredondado "para cima"
+ordem_grandeza_ema = np.ceil(np.log10(erro_medio_absoluto))
+
+ordem_grandeza_ema [ordem_grandeza_ema == -np.inf] = np.nan
+EMA = int( np.nanmean( ordem_grandeza_ema ) )
+
+
+
 
 
