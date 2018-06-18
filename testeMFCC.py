@@ -61,13 +61,13 @@ print "Tudo continua OK"
 dft_frames0 = MFCC.DFT(frames1[0])
 dft_frames0_numpy = np.fft.fft(frames1[0])
 
-print "Minha Implementacao"
-print dft_frames0
-print "Numpy"
-print dft_frames0_numpy
-
-for i in range(len(dft_frames0)/2):
-    print dft_frames0[i],dft_frames0_numpy[i]
+#print "Minha Implementacao"
+#print dft_frames0
+#print "Numpy"
+#print dft_frames0_numpy
+#
+#for i in range(len(dft_frames0)/2):
+#    print dft_frames0[i],dft_frames0_numpy[i]
 
 # Estima o erro do valor obtido com a dct implementada diretamente e a da biblioteca numpy
 
@@ -78,6 +78,19 @@ ordem_grandeza_ema = np.ceil(np.log10(erro_medio_absoluto))
 
 ordem_grandeza_ema [ordem_grandeza_ema == -np.inf] = np.nan
 EMA = int( np.nanmean( ordem_grandeza_ema ) )
+
+print "Erro medio absoluto, entre a funcao implementada DFT e a presente na biblioteca numpy: ", EMA
+
+# Extrai apenas a parte real
+dft_frames0_real = np.real(dft_frames0)
+
+# Utiliza o valor absoluto
+dft_frames0_real = np.abs(dft_frames0_real)
+
+# Aplica o log na base 10
+log_dft_frames0 = np.log10(dft_frames0_real)
+
+print log_dft_frames0
 
 
 
