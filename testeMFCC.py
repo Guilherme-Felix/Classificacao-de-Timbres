@@ -39,8 +39,10 @@ passo_jan = 10e-3  # passo da janela em ms
 
 tam_jan = dur_jan*sr
 tam_passo = passo_jan*sr
+
 tempo1 = np.linspace(0,20,tam_jan)
 tempo2 = np.linspace(10,30, tam_jan)
+
 frames1 = MFCC.divide_em_frames(audio1,sr,dur_jan,passo_jan)
 
 print frames1

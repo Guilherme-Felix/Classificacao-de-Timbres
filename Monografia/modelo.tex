@@ -1,0 +1,379 @@
+\documentclass[
+        12pt,
+        openany, %openright,			
+        oneside, %twoside,			%% twoside: para frente e verso ao imprimir
+        a4paper,			
+        english,			
+%	french,				%% Idioma adicional 
+%	spanish,			%% Idioma adicional 
+        brazil			        %% Idioma principal 
+        ]{abntbibufjf}
+
+\usepackage{lmodern}						
+\usepackage[T1]{fontenc}		
+\usepackage[utf8]{inputenc}		%% Para converter automaticamente acentos como digitados. Mude utf8 para latin1 se precisar. 
+                                        %% Permite digitar os acentos no teclado normalmente, sem comandos (\'e \`a , etc.).
+\usepackage{lastpage}			
+\usepackage{indentfirst}		
+\usepackage{color}			
+\usepackage{graphicx}			
+\usepackage{microtype} 			
+
+%% -----------------------------------------------------------------------------
+
+%% Obs.: Alguns acentos foram omitidos.
+
+\titulo{T\'itulo do trabalho} %%Por exemplo, Titulo da tese
+% \subtitulo{: subt\'itulo do trabalho}  %% Retirar o primeiro ``%'' desta linha se for utilizar subtitulo. Deixar os dois pontos antes, em ``: subt\'itulo'' . 
+\autor{Nome do autor}
+\autorR{Sobrenome, Primeiro nome do autor} %%Colocar o sobrenome do autor antes do primeiro nome do autor, separados por ,
+\local{Juiz de Fora}
+\data{2014} %%Alterar o ano se precisar
+\orientador[Orientador:]{Nome do orientador} %%Se precisar, troque [Orientador:] por [Orientadora:]
+% \coorientador[Coorientador:]{Nome do coorientador } %% Retirar o primeiro ``%'' desta linha se tiver coorientador. Se precisar, troque por [Cooorientadora:]. 
+\instituicao{Universidade Federal de Juiz de Fora}
+\faculdade{Instituto de Ci\^encias Exatas} %%Alterar, dentro de chaves {}, se precisar.
+\programa{Programa de P\'os\mbox{-Gra}dua\c{c}\~ao em Matem\'atica} %%Alterar, dentro de chaves {}, se precisar.
+\objeto{Disserta\c{c}\~ao (Mestrado)}  %%Tese (Doutorado)
+\natureza{Disserta\c{c}\~ao  %%Tese
+apresentada ao \insereprograma ~da Universidade Federal de Juiz de Fora, na \'area de concentra\c{c}\~ao 
+em %%PREENCHER 
+, como requisito parcial para obten\c{c}\~ao do t\'itulo de Mestre em  %% Doutor em
+Matem\'atica.} %%Trocar Matem\'atica por outro, se precisar.
+
+
+%% Abaixo, prencher com os dados da parte final da ficha catalografica
+
+\finalcatalog{1. Palavra-chave. 2. Palavra-chave. 3. Palavra-chave. I. Sobrenome, Nome do orientador, orient. II. T\'itulo.} %% Aqui fica 
+% escrito a palavra ``T\'itulo'' mesmo, nao o do trabalho. Se tiver coorientador, os dados ficam depois dos dados 
+%% do orientador (II. Sobrenome, Nome do coorientador, coorient.) e antes de ``II. T\'itulo'', o qual passa a ``III. T\'itulo''.
+
+%% ---
+
+\setlength{\parindent}{1.3cm}
+
+\setlength{\parskip}{0.2cm}  
+
+\setlength\afterchapskip{12pt}  
+
+
+%% Iniciar o documento
+\begin{document}
+
+%% ELEMENTOS PRE-TEXTUAIS
+
+%% Capa
+\inserecapa
+
+%% Folha de rosto
+\inserefolhaderosto
+
+
+%% Ficha catalografica. AO IMPRIMIR, DEIXAR NO VERSO DA FOLHA DE ROSTO.
+\inserecatalog  
+
+
+%% Folha de aprovacao
+\begin{folhadeaprovacao}
+
+  \begin{center}
+    {\chapterfont \bfseries \insereautor}
+
+    \vfill
+    \begin{center}
+      {\chapterfont\bfseries\inseretitulo \inseresubtitulo}
+    \end{center}
+    \vfill
+    
+    \hspace{.45\textwidth}
+    \begin{minipage}{.5\textwidth}
+        \inserenatureza
+    \end{minipage}%
+    \vfill
+   \end{center}
+        
+   Aprovada em: %%COLOCAR A DATA 
+   
+   \begin{center} BANCA EXAMINADORA \end{center}
+   \assinatura{Prof. Dr. \insereorientador \ - Orientador \\ Universidade Federal de Juiz de Fora} 
+%  \assinatura{Professor Dr. \inserecoorientador \ - Coorientador \\ Universidade Federal de Juiz de Fora}
+   \assinatura{Professor Dr. ?? \\ Universidade ???}
+   \assinatura{Professor Dr. ?? \\ Universidade ??} 
+%  \assinatura{...} %%RETIRE O % E PREENCHA SE PRECISAR
+%  \assinatura{...}
+%  \assinatura{...}
+\end{folhadeaprovacao}
+
+
+%% Dedicatoria. OPCIONAL. Retirar o ``%'' de cada das 4 linhas abaixo, caso queira.
+% \begin{dedicatoria} \vspace*{\fill} \centering \noindent
+%   \textit{ Dedico este trabalho ... (opcional)} 
+%   \vspace*{\fill}
+% \end{dedicatoria}
+
+
+%% Agradecimentos. OPCIONAL. CASO SEJA BOLSISTA, INSERIR OS DEVIDOS AGRADECIMENTOS.
+\begin{agradecimentos}
+
+De acordo com a Associa\c{c}\~ao Brasileira de Normas T\'ecnicas - 14724 (2011, p. 1) Agradecimentos 
+\'e o ``texto em que o autor faz agradecimentos dirigidos \`aqueles que contribu\'iram de maneira relevante \`a elabora\c{c}\~ao do trabalho.''  
+
+\end{agradecimentos}
+
+%% Epigrafe. OPCIONAL
+\begin{epigrafe}
+    \vspace*{\fill}
+	\begin{flushright}
+		``Texto em que o autor apresenta uma cita\c{c}\~ao, seguida de autoria, relacionada com a                       
+  mat\'eria tratada no corpo do trabalho'' \\
+(ASSOCIA\c{C}\~AO BRASILEIRA DE NORMAS T\'ECNICAS, 2011, p. 2) \\
+  A ep\'igrafe elaborada conforme NBR 10520 (Ep\'igrafe - Opcional)
+	\end{flushright}
+\end{epigrafe}
+
+
+%% RESUMOS
+
+%% Resumo em Portugu^es. OBRIGATORIO.
+\setlength{\absparsep}{18pt} 
+\begin{resumo}
+De acordo com a Associa\c{c}\~ao Brasileira de Normas T\'ecnicas - 6028 (2003, p. 2) ``o resumo deve ressaltar 
+o objetivo, m\'etodo e as conclus\~oes do documento (...) Deve ser composto de uma sequ\^encia de frases 
+concisas, afirmativas e n\~ao de enumera\c{c}\~ao de t\'opicos. Recomenda-se o uso de par\'agrafo \'unico.''
+O resumo deve ter de 150 a 500 palavras.
+
+Palavras-chave: Palavra-chave. Palavra-chave. Palavra-chave. %finalizadas por ponto e inicializadas por letra maiuscula.
+
+\end{resumo}
+ 
+ 
+%% Resumo em Ingle^s
+\begin{resumo}[ABSTRACT]
+ \begin{otherlanguage*}{english}
+   ...
+
+Key-words: ...
+ \end{otherlanguage*}
+\end{resumo}
+
+%% Seguindo o mesmo modelo acima, pode-se inserir resumos em outras linguas. 
+
+%% Lista de ilustracoes. OPCIONAL.
+\pdfbookmark[0]{\listfigurename}{lof}
+\listoffigures*
+\cleardoublepage
+
+
+%% Lista de tabelas. OPCIONAL. Retire o ``%'' de cada das 3 linhas seguintes, caso queira.
+% \pdfbookmark[0]{\listtablename}{lot}
+% \listoftables*
+% \cleardoublepage
+
+%% Lista de abreviaturas e siglas. OPCIONAL
+\begin{siglas} %%ALTERAR OS EXEMPLOS ABAIXO, CONFORME A NECESSIDADE
+  \item[ABNT] Associa\c{c}\~ao Brasileira de Normas T\'ecnicas
+  \item[UFJF] Universidade Federal de Juiz de Fora
+  \item[IBGE] Instituto Brasileiro de Geografia e Estat\'istica
+\end{siglas}
+
+%% Lista de simbolos. OPCIONAL
+\begin{simbolos} %%ALTERAR OS EXEMPLOS ABAIXO, CONFORME A NECESSIDADE
+  \item[$ \forall $] Para todo
+  \item[$ \in $] Pertence
+ \end{simbolos}
+
+ 
+%% Sumario
+\pdfbookmark[0]{\contentsname}{toc}
+\tableofcontents*
+\cleardoublepage
+
+%% ----------------------------------------------------------
+
+%% ELEMENTOS TEXTUAIS
+
+\textual
+\pagestyle{simple}   
+
+
+\chapter{INTRODU\c{C}\~AO}  %%Nesta linha, dentro de { }, digita-se em CAIXA ALTA, como apresentado aqui
+
+No sistema num\'erico ``a indica\c{c}\~ao da fonte \'e feita por uma numera\c{c}\~ao \'unica e consecutiva, 
+em algarismos ar\'abicos, remetendo \`a lista de refer\^encias ao final do trabalho, 
+do cap\'itulo ou da parte, na mesma ordem em que aparecem no texto. 
+N\~ao se inicia  a numera\c{c}\~ao das cita\c{c}\~oes a cada p\'agina.''
+(ASSOCIA\c{C}\~AO BRASILEIRA DE NORMAS T\'ECNICAS, 2002, p. 4).
+
+``O sistema num\'erico n\~ao deve ser utilizado quando h\'a notas de rodap\'e.'' 
+(ASSOCIA\c{C}\~AO BRASILEIRA DE NORMAS T\'ECNICAS, 2002, p. 4).
+
+``A indica\c{c}\~ao da numera\c{c}\~ao pode ser feita entre par\^enteses, alinhada ao texto, [...], 
+ap\'os a pontua\c{c}\~ao que fecha a cita\c{c}\~ao.''
+(ASSOCIA\c{C}\~AO BRASILEIRA DE NORMAS T\'ECNICAS, 2002, p. 4).
+ 
+Exemplo: Diz Rui Barbosa: ``Tudo \'e viver, previvendo.''  (15) 
+
+Um exemplo de cita\c{c}\~ao de refer\^encia \'e \cite{Ferrari2003}. Outros dois exemplos s\~ao \cite{CalcB} e 
+\cite{Figueiredo96}.
+
+\section{SE\c{C}\~AO SECUND\'ARIA} %%Nesta linha, dentro de { }, digita-se em CAIXA ALTA
+
+Segundo a Associa\c{c}\~ao Brasileira de Normas T\'ecnicas - 10520 (2002, p. 2) 
+``as cita\c{c}\~oes diretas, de at\'e tr\^e linhas, devem estar entre aspas duplas''.
+
+A Associa\c{c}\~ao Brasileira de Normas T\'ecnicas - 10520 (2002, p. 2) determina que:
+\begin{citacao}
+As cita\c{c}\~oes diretas, no texto, com mais de tr\^es linhas, devem ser destacadas 
+com recuo de 4 cm da margem esquerda, com letra menor que a do texto utilizado 
+e sem aspas. No caso de documentos datilografados, deve-se observar apenas o recuo. 
+\end{citacao}
+
+A UFJF disponibiliza todas as normas da Cole\c{c}\~ao ABNT atrav\'es do endere\c{c}o
+\url{www.ufjf.br/biblioteca ou www.abntcolecao.com.br} 
+
+\subsection{\textbf{Se\c{c}\~ao terci\'aria}} %% O titulo da subsecao vem em negrito e caixa baixa
+
+De acordo com a Associa\c{c}\~ao Brasileira de Normas T\'ecnicas - 14724 (2011, p. 11)
+\begin{citacao}
+ (...) qualquer que seja o tipo de ilustra\c{c}\~ao, sua identifica\c{c}\~ao aparece na parte superior, 
+ precedida da palavra designativa (desenho, esquema, fluxograma, fotografia, gr\'afico, mapa, 
+ quadro, retrato, figura, imagem, entre outros), seguida de seu n\'umero de ordem na ocorr\^encia 
+ no texto, em algarismos ar\'abicos, travess\~ao e do respectivo t\'itulo. Ap\'os a ilustra\c{c}\~ao, 
+ na parte inferior, indicar a fonte consultada (elemento obrigat\'orio, mesmo que seja produ\c{c}\~ao 
+ do pr\'oprio autor), legenda, notas e outras informa\c{c}\~oes necess\'arias \`a sua compreens\~ao (se houver). 
+ A ilustra\c{c}\~ao deve ser citada no texto e inserida o mais pr\'oximo poss\'ivel do trecho a que se refere. 
+\end{citacao}
+
+As tabelas ``devem ser citadas no texto, inseridas o mais pr\'oximo poss\'ivel do trecho a que se 
+referem e padronizadas conforme o Instituto Brasileiro de geografia e Estat\'istica (IBGE).''
+(ASSOCIA\c{C}\~AO BRASILEIRA DE NORMAS T\'ECNICAS, 2011, p. 11).
+
+%%EXEMPLO PARA SE COLOCAR CORRETAMENTE A FIGURA DO ARQUIVO nomearquivo LOCALIZADA NA MESMA PASTA DESTE. %%Automaticamente, 
+%%envia os dados para a Lista de Ilustracoes e a ficha catalografica.
+
+%\begin{figure}
+%\begin{center}
+%\caption{Informa\c{c}\~ao acima da figura}
+%\includegraphics[width=7cm]{nomearquivo} \\
+%\fonte{Aqui se escreve a fonte da figura}
+%\end{center}
+%\end{figure}
+
+\subsubsection{\textit{Se\c{c}\~ao quatern\'aria}} %% O titulo da subsubsecao vem em italico e caixa baixa 
+
+Se for utilizado o sistema num\'erico no texto, a lista de refer\^encias deve
+seguir mesma ordem num\'erica crescente. O sistema num\'erico n\~ao pode ser usado
+concomitantemente para notas de refer\^encia e notas explicativas. (ASSOCIA\c{C}\~AO BRASILEIRA DE NORMAS T\'ECNICAS, 2002)
+
+Orienta\c{c}\~oes para elabora\c{c}\~ao de refer\^encias: \\
+\url{http://www.ufjf.br/biblioteca/servicos/normalizacao-2} \\
+ABNT NBR 6023:1989 - \url{http://www.abntcolecao.com.br}
+
+\subsubsubsection{Se\c{c}\~ao quin\'aria}  %% O titulo desta vem em caixa baixa
+
+De acordo com a Associa\c{c}\~ao Brasileira de Normas T\'ecnicas - 14724 (2011) a numera\c{c}\~ao 
+progressiva deve conter seus t\'itulos destacados gradativamente e sua digita\c{c}\~ao deve 
+ser id\^entica no sum\'ario e no texto. Assim, a numera\c{c}\~ao progressiva deve ser: 
+\begin{citacao}
+Elaborada conforme a ABNT NBR 6024. A numera\c{c}\~ao progressiva deve ser utilizada para 
+evidenciar a sistematiza\c{c}\~ao do conte\'udo do trabalho. Destacam-se gradativamente os 
+t\'itulos das se\c{c}\~oes, utilizando-se os recursos de negrito, it\'alico ou sublinhado e 
+outros, no sum\'ario e, de forma id\^entica, no texto. (ASSOCIA\c{C}\~AO BRASILEIRA DE NORMAS 
+T\'ECNICAS, 2011, p. 11).
+\end{citacao}
+
+O CDC/UFJF padronizou o destaque gradativo da numera\c{c}\~ao progressiva da seguinte forma: 
+
+$
+\begin{array}{ll}
+\textbf{2} & \mbox{ \textbf{SE\c{C}\~AO PRIM\'ARIA (CAIXA ALTA / COM NEGRITO)}}\\
+2.1 & \mbox{ SE\c{C}\~OES SECUND\'ARIAS (CAIXA ALTA / SEM NEGRITO)}\\
+2.1.1 & \mbox{ \textbf{Se\c{c}\~oes terci\'arias (Caixa baixa / com negrito)}} \\
+2.1.1.1 & \mbox{ \textit{Se\c{c}\~oes quatern\'arias (Caixa baixa / com it\'alico)}} \\
+2.1.1.1.1 & \mbox{ Se\c{c}\~oes quin\'arias (caixa baixa / sem negrito / sem it\'alico)}
+\end{array}
+$
+
+
+\chapter{NOME DO CAP\'ITULO}
+
+Texto do segundo cap\'itulo.
+
+
+%% ----------------------------------------------------------
+
+%% ELEMENTOS POS-TEXTUAIS
+
+\postextual
+
+%% Referencias. LISTAR EXATAMENTE AS CITADAS NO TRABALHO.
+\begin{thebibliography}{99}
+
+%% ALGUNS EXEMPLOS ABAIXO
+
+\bibitem{Ferrari2003} FERRARI, M. Amplia\c{c}\~ao e refor\c{c}o do vocabul\'ario em l\'ingua estrangeira atrav\'es da narra\c{c}\~ao e 
+da leitura de hist\'orias infanto-juvenis. \textit{Letras Hoje}, Porto Alegre, v. 39, n. 3, p. 73-90, set. 2003.
+
+\bibitem{CalcB} FLEMMING, D. M.; GON\c{C}ALVES, M. B. \textit{C\'alculo B.} S\~ao Paulo: Makron Books, 2007.
+
+\bibitem{Figueiredo96} FIGUEIREDO, D. G. \textit{An\'alise I.} Rio de Janeiro: Livros T\'ecnicos e Cient\'ificos, 1996.
+
+\end{thebibliography}
+
+
+
+
+%% Apendices
+
+\begin{apendicesenv}
+
+\chapter{T\'itulo do Primeiro Ap\^endice}
+
+``Texto ou documento elaborado pelo autor, a fim de complementar sua argumenta\c{c}\~ao, 
+sem preju\'izo da unidade nuclear do trabalho''
+(ASSOCIA\c{C}\~AO BRASILEIRA DE NORMAS T\'ECNICAS, 2011, p. 6).
+
+``Elemento opcional. Deve ser precedido da palavra \textbf{AP\^ENDICE}, identificado por letras mai\'usculas 
+consecutivas, travess\~ao e pelo respectivo t\'itulo. Utilizam-se letras mai\'usculas dobradas, 
+na identifica\c{c}\~ao dos ap\^endices, quando esgotadas as letras do alfabe\-to.''
+(ASSOCIA\c{C}\~AO BRASILEIRA DE NORMAS T\'ECNICAS, 2011, p. 13)
+\newline
+EXEMPLO:
+\begin{center}
+\textbf{AP\^ENDICE A - Avalia\c{c}\~ao num\'erica de c\'elulas inflamat\'orias}
+\end{center}
+
+
+\chapter{Segundo Ap\^endice}
+Texto do Segundo Ap\^endice 
+\end{apendicesenv}
+
+%% Anexos
+
+\begin{anexosenv}
+
+\chapter{T\'itulo do Primeiro Anexo}
+``Texto ou documento n\~ao elaborado pelo autor, que serve de fundamenta\c{c}\~ao, 
+comprova\c{c}\~ao e ilustra\c{c}\~ao''
+(ASSOCIA\c{C}\~AO BRASILEIRA DE NORMAS T\'ECNICAS, 2011, p. 9).
+
+``Elementos opcional. Deve ser precedido da palavra \textbf{ANEXO}, identificado por letras mai\'usculas 
+consecutivas, travess\~ao e pelo respectivo t\'itulo. Utilizam-se letras mai\'usculas dobradas, 
+na identifica\c{c}\~ao dos anexos, quando esgotadas as letras do alfabeto.''
+(ASSOCIA\c{C}\~AO BRASILEIRA DE NORMAS T\'ECNICAS, 2011, p. 6).
+\newline
+EXEMPLO: 
+\begin{center}
+\textbf{ANEXO A - Representa\c{c}\~ao gr\'afica da contagem de c\'elulas inflamat\'orias presentes
+nas caudas em regenera\c{c}\~ao - Grupos de controle I (Temperatura)}
+\end{center}
+
+
+\chapter{T\'itulo do Segundo Anexo}
+Texto do Segundo Anexo
+
+
+\end{anexosenv}
+
+%%% ---
+\end{document}

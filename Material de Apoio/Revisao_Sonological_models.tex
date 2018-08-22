@@ -1,0 +1,101 @@
+Timbre é uma característica do som que não pode ser relacionada diretamente
+com uma dimensão física, já que sua percepção resulta da presença (e ausência)
+de diferentes propriedades sonoras. Apesar de conhecida a influência dessas
+propriedades, o estudo é muito difícil, especialmente pelo fato de métodos
+dependerem de respostas não ambíguas de ouvintes. Alguns estudos empregam a
+noção de "classificação por similaridade" para a construção de um espaço de
+timbre que, embora indiquem um caminho na busca da identificação entre causa e
+sensação, não conduzem a um método claro de definição um conjunto de
+coordenadas para o qual um som arbitrário pode ser diretamente mapeado.
+
+Por outro lado, para o problema de classificação de voz, diversas técnicas de
+processamento de sinal já foram aplicadas para conseguir reudção de dados
+suficiente de forma a preservar a quantidade de informação necessária para
+definir um mapeamento quase unívoco entre forma de onda e fonema.
+
+Esse trabalho tenta aplicar algumas técnicas comuns de análise de sons para
+sinais acústicos a fim de extrair um conjunto de parametros significantes para
+a descrição e classificação de timbres de instrumentos musicais.
+
+Análise acústica reside na modelagem matemáticos (e portanto, computacional) do
+sinal (entendido como uma sequencia de amostras - samples) e no estudo de
+parâmetros descritivos do modelo aplciado. O modelo deve fornecer uma
+representação simplificada do conjunto de dados, ou seja, a quantidade de
+parâmetros do modelo deve ser suficientemente pequena e a variância dos
+parâmetros, vistos como função do tempo, devem ser significativamente
+reduzidas comparadas com a variância do conjunto de dados original. Nota-se
+portanto a necessidade de um processo de redução de dados. Esse processo deve
+ser feito (e projetado) tendo em vista os objetivos da análise e,
+naturalmente, o tipo de som que está sendo analisado. 
+
+2.1 - 1h15min
+Modelos aplicados na pesquisa de timbres podem ser divididos em três classes:
+
+- Modelos de Sinal
+- Modelos que levam em conta os mecanismos de produção de som
+- Modelos que levam em conta as propriedades perceptuais auditivas
+
+Os modelos classicos para a representação do som no estudo de timbres
+normalmente empregam a representação do sinal no espaço de frequência, que tem
+por base a Transformada Discreta de Fourier (DCT) em suas diversas formulações
+e variantes. 
+
+Em aplicações de reconhecimento de voz os modelos mais usados são os que
+entendem a voz como um sinal e as palavras pronunciadas como um filtro sobre a
+voz. Assim, tem-se um sinal com um filtro lienar. LPC e suas variantes são os
+métodos mais usados nesse caso.
+
+O último tipo de modelo, perceptual, também foi desenvolvido por grupos que
+estudam processamento de voz. Uso da Transformada de Fourier de Tempo Curto
+(STFT), Cepstrum, e demais métodos foram feitos levando em conta o processo
+físico que caracteriza a onda obtida da transdução do sinal sonoro (variações
+de pressão do ar) em um sinal elétrico.
+
+Com o passar dos anos quase todos esses modelos foram adaptados, tendo sido
+acrescidos a eles, ainda que de forma geral, fenômenos perceptuais, como por
+exemplo Previsão Linear com Envelope de Frequencia (Linear Prediction on a
+warped frequency scale), modelos autitivos derivados da STFT (Short-Time
+Fourier Transform), anlálise preditiva de voz com base perceptual (Perceptual
+based linear prediction of speech). O exemplo mais significante de modelo que
+busca melhorar a análise acústica utilizando conhecimentos perceptuais é a
+análise de voz por meio de Mel-frequency Cepstrum (espectro de frequencia na
+escala Mel), que transforma a frequencia de um domínio linear em um domínio
+logaritmico, se aproximando da forma como o sistema auditivo humano percebe a
+altura (graves e agudos) dos sons. O uso de Coeficientes Mel-Ceptrais
+(Mel-frequency Cepstrum Coefficients - MFCC) é quase universalmente usado para
+a construção de sistemas de reconhcimento de voz automatizado. 
+
+Todos esses modelos tem por premissa que as propriedades do sinal mudam
+lentamente com o tempo, o que embora represente uma boa aproximação ainda
+desconsidera mudanças sutis na dinamica do sinal sonoro. Por conta disso,
+parâmetros como diferença entre parâmetros em frames sucessivos e diferença
+das diferenças entre frames sucessivos passaram a estar presentes em
+praticamente todos os sistemas automatizados de reconhecimento de voz.
+Até a data deste trabalho (90s) essas inovações não entraram no campo da
+análise de timbre, é possível que possam abrir portas para novas
+interpretações e resultados na área
+
+O uso de modelos auditivos tem ganhado vasta aceitação não apenas em pesquisas
+de reconhecimento e análise de voz como também em pesquisa de timbre. Estudos
+recentes apresentando modelos auditivos e modelos auditivos simplificados
+trouxeram resultados promissores.
+
+[4] [32] 
+
+3 - Espaço de Timbre - 2h
+Alguns dos parâmetros relacionado à análise acústica são parâmetros globais e
+representam o som como um todo, como por exemplo a potência média. Outros
+variam com o tempo e representam características de um trecho analisado em uma
+curta janela de tempo. Sendo o som descrito por atributos globais e locais
+(referentes a frames analisados) a grande questão é saber quais deles são mais
+importantes e devem ser mantidos. Ao fim desse processo, muito provavelmente
+ter-se-á um vetor \textit{m}-dimensional que representam características que variam no
+tempo. O objetivo da próxima etada do processamento é, portanto, construir um
+espaço com menor dimensão (2 ou 3) que represente o sinal e leve a uma
+interpretação mais simples desse espaço. Esse espaço de menor dimensão será
+chamado de \textit{espaço de timbre}. O espaço construído deve ser tal que
+sons distintos devem ser ´´distantes" entre si e sons parecidos devem ser
+``próximos" entre si, ou seja, o conceito de similaridade acústica deve estar
+diretamente relacionado com o conceito de distância.
+
+ 

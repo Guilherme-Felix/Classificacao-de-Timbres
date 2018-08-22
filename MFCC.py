@@ -9,6 +9,8 @@ Etapas:
     (Ver Beth Loga - Cambridge)
     3 - Aplica o log no vetor de amplitudes
     4 - Converte o resultado para a escala "Mel"
+        Funcao utilizada: M(f) = 1125 ln(1 + f/700)
+                          M(f) = (ln(1 + f/700) * 1000) / ln(1 + 1000/700)
     5 - Aplica uma transformacao nos coeficientes obtidos para descorrelacionar suas componetes
     (Em reconhecimento de voz a transformacao de Kahunnen-Loeve e aproximada usando uma DCT). 
     Tentaremos usar uma DCT aqui.
