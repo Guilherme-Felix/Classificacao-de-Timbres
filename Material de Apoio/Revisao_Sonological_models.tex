@@ -98,4 +98,50 @@ sons distintos devem ser ´´distantes" entre si e sons parecidos devem ser
 ``próximos" entre si, ou seja, o conceito de similaridade acústica deve estar
 diretamente relacionado com o conceito de distância.
 
- 
+Os experimentos conduzidos na Universidade de Padua apresentam primordialmente espaços de timbre obtidos a partir de ferramentas como mapas neurais auto organizaveis de Kohonen (Kohonen's self-organizing neural maps)  e Análise de Componente Principal (PCA - Principal Component Analysis).
+
+3.1 - Self Organizing Maps
+
+O sinal sonoro a ser tratado é convertido em uma sequencia de pontos em um espaço de dados de dimensão \textit{m}. As propriedades topológicas desse espaço são consequência direta da capacidade da técnica de processamento extrair as informaçẽs do timbre do sinal. Ainda assim, essa informação é muito complexa para ser interpretada diretamente, razão pela qual uma rede neural auto-organizavel pode ser uma boa ferramenta para auxiliar nessa tarefa.
+
+algoritmo de aprendizagem para redes auto organizaveis formalizadas por Kohonen consiste em uma modificação da estrutura interna do modelo neural em um modelo de projeção n-dimensional da distribuição de probabilidade da entrada m-dimensional. O mapa neural faz uma \textit{extração de atributos}. Sendo $n < m$, os atributos da entrada que possuem maior variância são mapeados ao longo dos n-eixos.
+
+Geralmente, mapas neurais retangulares são aplicados. Um vetor de pesos \textbf{$w_i$} com a mesma dimensão do vetor de entrada
+\textbf{$x$} associado a cada neurônio, produzindo uma estrutura na qual todos os neurônios estão conectados em paralelo a todos os terminais da entrada. Para cada vetor de entrada a melhor célula a ela conectada \textbf{$c$} é encontrada e essa célula determina a correspondência entre a entrada e a posição no mapeamento de saída. A melhor célula associada (\textit{matching cell}) é escolhida de forma de a distância entre \textbf($x$) e \textbf($w_i$) seja minimizada. 
+
+$$c = min\{|| \textbf{x} - \textbf{w_i} || \} $$
+
+Essa coordenada é compreendida como a projeção do vetor de entrada no mapeamento. A função de distância usada pode ser escolhida de acordo com diversas métricas que, naturalmente, irão refletir na organização topológica ao final do processo. Na fase de adaptação, para cada novo conjunto de treinamento a melhor célula associada (\textit{matching cell}) é selecionada e um conjunto de células vizinhas \textit{$N_i$} é definido. Todos os neurônios pertencentes a esse conjunto, denominado vizinhança topológica, são atualizados por um processo de minimização de distância entre a entrada atual e o vetor de pesos dentro do conjunto:
+
+$$ w_i(t+1) = w_i(t) + \alpha[x(t) - w_i(t)], \quad \forall i \in N_c $$
+
+onde $N_c \texttrm{e} \alpha$ são taxas de aprendizagem e decaem com as iterações. As alterações mais importantes ocorrem no início do processo, quando $N_c$ é um conjunto grande, enquanto o restante da execução se refere a um ajuste fino dos valores internos da rede.
+
+O mapeamento obtido é espacialmente organizado, a rede reconhece e destaca as componentes com maior variância nos dados de entrada. Após o processo de auto organização os pesos da rede são ajustados a essas componentes. Mesmo com a entrada estando parcialmente comprometida com ruído a rede Kohonen mantem sua capacidade de extração de atributos.
+
+O resultado obtido com essa técnica é uma projeção não-linear de uma entrada em um espaço m-dimensional em uma estrutura de dimensão menor. O objetivo é obter uma representação dos dados de mais fácil legibilidade, preservando seus atributos principais e descartando redundâncias e ruído. Ainda, o a rede projetada por Kohonen não exige qualquer consideração prévia a respeito da distribuição de probabilidade do modelo. Assim, é uma ferramenta extremamente rápida e conveniente que permite ao pesquisador identificar, caso existam, os atributos principais de um conjuto complexo de dados experimentais.
+
+3.2 - PCA 
+
+Análise de Componente Principal (\textit{Principal Component Analysis} - PCA) é uma ferramenta estatística cuja formulação tem por base as propriedades das transformações lineares ortogonais (ortogonalização de vetores). Para um conjunto de dados de dimensão ma informação principal passa a ser contida em um conjunto reduzido de variáveis por meio de operações de rotação e escala. A transformação é definida de forma que o primeiro componente principal tem maior variância possível e cada uma das próximas componentes também apresentam maior variância possível desde que ortogonalmente às definidas anteriormente. Os maiores objetivos da técnica são compressão dos dados e otimização de sua interpretação. Geometricamente, o método define um sistema de coordenadas rotacionado onde cada eixo coincide com a direção de máxima variância. Para que seja aplicado e as componentes obtidas sejam de fato não-correlacionadas, exige-se que o conjunto de dados tenha distribuição normal.
+O PCA apresenta resultados mais precisos e mensuráveis do que o KNN (rede neural de Kahonen). O conjunto de coordenadas fornecidos pelo PCA permite a obtenção de resultados quantitativos durante o processo de ajuste de modelo ao conjunto de dados. Em contrapartida trata-se de uma transformação linear, enquanto o método de Kahonen pode tratar dados mais complexos graças a suas propriedades locais.
+
+4 - Resultados experimentais
+
+Resultados obtidos para se definir um espaço de timbres, universidade de Padua. Foram empregados diversos modelos de análise acústica, diferentes técnicas de redução de dados e diferentes bases de dados.
+
+4.1 - Espaços a partir da análise MFCC
+
+Parametrização por meio do uso dos MFCC, amplamente usando em reconhecimento de voz-fala, se mostrou muito eficiente na aplicação de sons musicais. Importante destacar como a topologia final depende da métrica definida para o espaço. Como o PCA é uma transformação ortogonal e a distância Euclidiana é perservada em transformações ortogonais, essa foi a métrica escolhida, tanto para KNN quanto para PCA. Destaque-se que para a distância Euclidiana 
+
+$$
+d = \sqrt \sum_i (c_i^{(m)} - c_i^{(n)})^2 = \int_0^{2 \pi} ( C^{(m)}(\omega) - C^{(n)}(\omega) )^2 \frac{d \omega}{2 \pi}
+$$
+
+onde em um quadro para uma janela de análise $ c_i^{(m)} $ indica os coeficientes MCFF e $ C^{(m)} (\omega) $ é a transformada de Fourier do quadro para o m-ésimo instrumento. Para a simplificação em que apenas alguns poucos coeficientes são mantidos, a distância Euclidiana entre dois vetores de coeficientes mel-ceptrais corresponde à distância Euclidiana entre os espectros simplificados:
+
+$$
+d^2 = || c^{(m)} - c^{(n)} ||_2 \approx || C^{(m)} - C^{(n)} ||_2.
+$$
+
+3h
