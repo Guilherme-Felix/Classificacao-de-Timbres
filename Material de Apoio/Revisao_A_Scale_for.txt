@@ -19,7 +19,7 @@ produzida. Entretanto, já foi demonstrado experimentalmente que é possível
 modificar a altura de um som (pitch of a tone) alterando sua intensidade. Sons
 de alta frequencia aumentam sua altura com o aumento da intensidade enquanto
 sons de baixa frequência diminuem. Para alguns casos de baixa frequencia, essa
-mudança pode altingir meia oitava. Assim, altura não é frequencia e nem está
+mudança pode atingir meia oitava. Assim, altura não é frequencia e nem está
 correlacionado diretamente com ela. 
 
 Dessa forma a altura, bem como a intensidade, estão relacionadas com o

@@ -49,7 +49,7 @@ def gera_fft(dados):
     com seus coeficientes em modulo.
     '''
     fft_dados = np.fft.rfft(dados)
-    fft_dados = np.real(fft_dados)
+#    fft_dados = np.real(fft_dados)
     fft_dados = np.abs(fft_dados)
 #    fft_norm = [fft_dados[i] / dados.size for i in range( len(fft_dados) )]
     return fft_dados
@@ -68,16 +68,16 @@ def normaliza(fft_dados, metodo=1, tam=TAMANHO_IDEAL):
         #fft_norm = [fft_dados[i] / tam for i in range( len(fft_dados) )]
         fft_norm = fft_dados / tam 
     else:
-        fft_norm = fft_dados / max(fft_dados)
+        fft_norm = fft_dados / max(np.abs(fft_dados))
     return fft_norm
 
 def n_posicoes(janela, periodo_pos):
-	'''
-	Dado o intervalo de tempo desejado (janela) e o periodo de cada 
+    '''
+    Dado o intervalo de tempo desejado (janela) e o periodo de cada 
         subdivisao do vetor (tempo em segundos correspondente a cada 
         posicao do vetor da amostra de audio) retorna o numero de posicoes
         correspondente a janela
-	'''
+    '''
     return int( janela / periodo_pos)
 
 ############################################
@@ -94,14 +94,18 @@ for i in range ( len(arquivos) ):
     sample_rate, amostra = wav.read(diretorio+arquivos[i])
 
     print diretorio+arquivos[i] , '\n' 
+    amostra = np.array(amostra,dtype=np.float32)
     amostra = pre_processa(amostra)
     
     print amostra ,'\n'
+    amostra_norm = normaliza(amostra)
+    print amostra_norm ,'\n'
+
     conjuntoAmostra.append(amostra)
         
     fft_amostra = gera_fft(amostra)
-    fft_norm = normaliza(fft_amostra)
-    conjuntoFFT.append(fft_norm)
+#    fft_norm = normaliza(fft_amostra)
+    conjuntoFFT.append(fft_amostra)
 
 conjuntoAmostra = np.array(conjuntoAmostra)
 conjuntoFFT = np.array(conjuntoFFT)
@@ -170,7 +174,7 @@ plt.grid(True)
 
 plt.subplots_adjust(top=0.92, bottom=0.08, left=0.10, right=0.95, 
                     hspace=0.25, wspace=0.35)
-plt.savefig("Tempo_frequencia_dois_instr.png")
+plt.savefig("Tempo_frequencia_dois_instr_10_18.png")
 plt.show()
 
 # max_val = np.zeros(conjuntoFFT.shape[0])
@@ -184,7 +188,7 @@ estimators = [ ('9 clusters', KMeans(n_clusters=9)),
                ('11 clusters', KMeans(n_clusters=11)),
                ('13 clusters', KMeans(n_clusters=13))]
 
-#clt = KMeans(n_clusters=13)
+#clt = KMeans(n_clusters=11)
 #clt.fit(conjuntoFFT)
 
 # Roda 3 estimadores 
