@@ -3,6 +3,7 @@ from scipy.io import wavfile as wav
 import matplotlib.pyplot as plt
 import os 
 import itertools
+import pandas as pd
 TAMANHO_IDEAL = 2**16
 
 def flat_list(lista):
@@ -51,13 +52,22 @@ def normaliza(dados):
     dados_norm = dados / max(np.abs(dados))
     return dados_norm
 
+def rotula(tam, Nel):
+    step = Nel
+    l = 0
+    lbl = np.zeros(tam,dtype=int)
+    for i in range(0, tam, Nel):
+        lbl[i:i+step] = l
+        l = l+1
+    return lbl
+
 #==============================================
 #               INICIO DO PROCEDIMENTO
 #==============================================
 
 PLOT = False
 # lista com os nomes dos arquivos
-diretorio = 'AmostrasTratadas/'
+diretorio = 'KNN_Teste/'
 arquivos = os.listdir(diretorio)
 arquivos.sort()
 
@@ -110,9 +120,41 @@ for j in range(len(arquivos)):
 
 atributos = np.array(atributos)
 
+os.system('spd-say "Features extracted successfully!" -r -80')
+
 #========================================================
 #                       CLASSIFICADOR
 #========================================================
 
+num_amostras = 26  # numero de amostras de cada classe
+rotulos = rotula(len(arquivos),num_amostras)
 
+np.random.seed(42)
+# gera permutacao de indices para conjunto de treinamento
+indices = np.random.permutation(len(arquivos))
+
+n_training_samples = 78
+train_mask = indices[:-n_training_samples]
+test_mask = indices[-n_training_samples:]
+
+# Definicao de conjunto de treinamento
+learnset_data = atributos[train_mask]
+learnset_labels = rotulos[train_mask]
+
+# Definicao do conjunto de testes
+testset_data = atributos[test_mask]
+testset_labels = rotulos[test_mask]
+
+os.system('spd-say "Classifier Set!" -r -50')
+from sklearn.neighbors import KNeighborsClassifier
+
+knn = KNeighborsClassifier(n_neighbors=1)
+knn.fit(learnset_data, learnset_labels)
+
+predict_labels = knn.predict(testset_data)
+
+y_real = pd.Series(testset_labels, name="Real")
+y_prev = pd.Series(predict_labels, name="Previsto")
+
+matriz_confusao = pd.crosstab(y_real, y_prev)
 
