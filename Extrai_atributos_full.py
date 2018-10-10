@@ -2,8 +2,21 @@ import numpy as np
 from scipy.io import wavfile as wav
 import matplotlib.pyplot as plt
 import os 
+import itertools
 TAMANHO_IDEAL = 2**16
 
+def flat_list(lista):
+    '''
+    Dada uma lista de listas, retorna um np.array com todos
+    os valores "corridos"
+    Exemplo: Se a entrada for [ [1,2,3], [4, 5, 6] ]
+    a saida sera [1, 2, 3, 4, 5, 6]
+
+    @param lista : lista de listas
+    @return np.array : np.array com todos os elementos da lista
+    '''
+    return np.array(list(itertools.chain.from_iterable(lista)))
+            
 def pre_processa(dados, left_channel=0, debug=False):
     '''
     Dado um array  que representa um audio, retorna o array 
@@ -46,12 +59,13 @@ PLOT = False
 # lista com os nomes dos arquivos
 diretorio = 'AmostrasTratadas/'
 arquivos = os.listdir(diretorio)
-#arquivos.sort()
+arquivos.sort()
 
 atributos = []
 
-for j in range(len(arquivos[:2])):
+for j in range(len(arquivos)):
     # Abre arquivo
+    print "Arquivo: ", j, '\n' 
     sr, x = wav.read(diretorio+arquivos[j]) # sr = sample rate = 44100
     x = pre_processa(x)
     x = normaliza(x)
@@ -91,4 +105,14 @@ for j in range(len(arquivos[:2])):
         plt.show()
 
     vetor = [freq[idxs], mX[idxs], X[idxs]]
+    vetor = flat_list(vetor)
     atributos.append(vetor)
+
+atributos = np.array(atributos)
+
+#========================================================
+#                       CLASSIFICADOR
+#========================================================
+
+
+
