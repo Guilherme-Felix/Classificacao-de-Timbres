@@ -28,17 +28,17 @@ def pre_processa(dados, left_channel=0, debug=False):
     if (debug == True):
         print "Tamanho da amostra: ", tam_amostra
         print "Tamanho apos recorte: ", len(dados)
+    dados = np.array(dados, dtype=np.float32)
     return dados
 
 def gera_fft(dados):
     '''
-    Dado um array MONO que representa um audio, retorna a magnitude da fft.(modulo de cada X(n).
+    Dado um array MONO que representa um audio, retorna a magnitude da fft.(modulo de cada X(n)).
     '''
     fft_dados = np.fft.fft(dados)
-    fft_dados = np.abs(fft_dados)
     return fft_dados
 
-def normaliza(dados, metodo=1, tam=TAMANHO_IDEAL):
+def normaliza(dados):
     '''
     Dado um audio como entrada (e o tamanho da respectiva amostra) 
     retorna um array fft normalizado, ou seja, cada elemento do array
@@ -55,12 +55,14 @@ def rotula_arquivos(arquivos):
     2 - Clarineta
     3 - Flauta
     4 - Oboe
-    5 - Sax
-    6 - Trombone
-    7 - Trompete
-    8 - Viola
+    5 - Sax Alto
+    6 - Sax Baritono
+    7 - Sax Tenor
+    8 - Trombone
+    9 - Trompete
+    10 - Viola
     '''
-    nomes = ['Basso*', 'Cello*', 'Clar*', 'Flau*', 'Oboe*', 'Sax*', 'Tromb*', 'Tromp*', 'Viola*']
+    nomes = ['Basso*', 'Cello*', 'Clar*', 'Flau*', 'Oboe*', 'SaxAl*', 'SaxBa*', 'SaxTe*','Tromb*', 'Tromp*', 'Viola*']
     y_real = np.zeros(len(arquivos), dtype=int)
     lbl = 0
     for i in range (len(arquivos)):
@@ -92,7 +94,12 @@ def rotula_arquivos(arquivos):
         elif (re.match(nomes[lbl+8], nm )):
             print 'OK - ' + nm
             y_real[i] = lbl + 8
-            
+        elif (re.match(nomes[lbl+9], nm )):
+            print 'OK - ' + nm
+            y_real[i] = lbl + 9
+        elif (re.match(nomes[lbl+10], nm )):
+            print 'OK - ' + nm
+            y_real[i] = lbl + 10
     return y_real
         
 ############################################
@@ -116,9 +123,9 @@ for i in range ( len(arquivos) ):
     amostra_norm = normaliza(amostra)
     print amostra_norm ,'\n'
 
-    conjuntoAmostra.append(amostra)
+    conjuntoAmostra.append(amostra_norm)
         
-    fft_amostra = gera_fft(amostra)
+    fft_amostra = gera_fft(amostra_norm)
     conjuntoFFT.append(fft_amostra)
 
 conjuntoAmostra = np.array(conjuntoAmostra)
@@ -130,10 +137,11 @@ print "FIM DO PROCEDIMENTO"
 rotulos_reais = rotula_arquivos(arquivos)
 
 
-num_instrumentos = 9
+num_instrumentos = 11
 print " Define nº de clusters = " + str(num_instrumentos)
-clt = KMeans(n_clusters=9, random_state=0)
-clusters = clt.fit_predict(conjuntoFFT)
+clt = KMeans(n_clusters=num_instrumentos, random_state=0)
+clt.fit(conjuntoFFT)
+clusters = clt.labels_
 
 labels = np.zeros_like(clusters)
 for i in range(num_instrumentos):
