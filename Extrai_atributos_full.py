@@ -67,13 +67,15 @@ def rotula(tam, Nel):
 
 PLOT = False
 # lista com os nomes dos arquivos
-diretorio = 'KNN_Teste/'
+diretorio = 'AmostrasTratadas/'
 arquivos = os.listdir(diretorio)
 arquivos.sort()
 
 atributos = []
 
-for j in range(len(arquivos)):
+TAM = len(arquivos)
+
+for j in range(TAM):
     # Abre arquivo
     print "Arquivo: ", j, '\n' 
     sr, x = wav.read(diretorio+arquivos[j]) # sr = sample rate = 44100
@@ -126,7 +128,8 @@ os.system('spd-say "Features extracted successfully!" -r -80')
 #                       CLASSIFICADOR
 #========================================================
 
-num_amostras = 26  # numero de amostras de cada classe
+num_classes = 8
+num_amostras = TAM/num_classes  # numero de amostras de cada classe
 rotulos = rotula(len(arquivos),num_amostras)
 
 np.random.seed(42)
