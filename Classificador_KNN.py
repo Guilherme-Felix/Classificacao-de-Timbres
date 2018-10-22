@@ -1,10 +1,9 @@
 import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
-import os
 import pandas as pd
 
 
-def geraConjTreinoTeste(feat, labels, tam_classe, n_treino):
+def geraConjTreinoTesteClasse(feat, labels, tam_classe, n_treino):
 
     '''
     Dado um vetor ordenado, por classe,
@@ -68,35 +67,111 @@ def geraConjTreinoTeste(feat, labels, tam_classe, n_treino):
     return learn_data, learn_labels, test_data, test_labels, indexes
 
 
-# ========================================================
-#                     CLASSIFICADOR
-# ========================================================
+def geraConjTreinoTeste(atributos, rotulos, tam_teste):
+    '''
+    Dado um vetor de atributos, um vetor de rotulos, divide esse conjunto em
+    dois, um de treino e teste, sendo que o de teste tem tamanho tam_teste e
+    o de treino tem tamanho len(atributos) - tam_teste
 
-# Numero de elementos usados para treino em cada classe
+    Entrada
+    @Params
+    atributos : np.array - Vetor de atributos
+    rotulos   : np.array - Vetor de rotulos
+    tam_teste : int      - Numero de elementos do conjunto de teste
 
-n_training_samples = 26
-print "Tamanho do conjunto de testes: ", n_training_samples
+    Retorno:
+    @return
+    learn_data:   np.array - Conjunto de treinamento
+    learn_labels: np.array - Conjunto de rotulos do treinamento
+    test_data:    np.array - Conjunto de teste
+    test_labels:  np.array - Conjunto de rotulos de teste
+    '''
+    np.random.seed(42)
+    indices = np.random.permutation(len(rotulos))
+    learn_mask = indices[:-tam_teste]
+    test_mask = indices[-tam_teste:]
 
-# learnset_data, learnset_labels, testset_data, testset_labels = geraConjTreinoTeste()
-# train_mask = indices[:-n_training_samples]
-# test_mask = indices[-n_training_samples:]
+    learn_data = atributos[learn_mask]
+    learn_labels = rotulos[learn_mask]
 
-# Definicao de conjunto de treinamento
-# learnset_data = atributos[train_mask]
-# learnset_labels = rotulos[train_mask]
+    test_data = atributos[test_mask]
+    test_labels = rotulos[test_mask]
+
+    return learn_data, learn_labels, test_data, test_labels
+
+
+def classificadorKNN(learn_data, learn_labels, test_data, k=1):
+
+    '''
+    Instancia um classificador KNN, faz o treinamento e testa com o conjuto
+    passado. E possivel definir o numero de vizinhos no argumento k.
+
+    Entrada
+    @Params
+    learn_data   : numpy.ndarray - Vetor de atributos para treinamento
+    learn_labels : numpy.ndarray - Vetor de rotulos para treinamento
+    test_data    : numpy.ndarray - Vetor de atributos para teste
+    k            : int           - Numero de vizinhos
+
+    Saida
+    @return
+    predict_labels : numpy.ndarray - Vetor de rotulos previstos pelo modelo
+
+    '''
+    knn = KNeighborsClassifier(n_neighbors=k)
+    knn.fit(learn_data, learn_labels)
+    predict_labels = knn.predict(test_data)
+
+    return predict_labels
+
+
+def geraMatrizConfusao(testset_lbls, predict_labels):
+    """
+    Dado os rotulos do conjunto de teste e os rotulos previstos pelo modelo
+    gera uma matriz de confusao
+
+    Entrada
+    @Params
+    testset_lbls    : numpy.ndarray - Vetor de rotulos do conjunto de testes
+    predict_labels  : numpy.ndarray - Vetor de rotulos produzidos pelo modelo
+
+    Saida
+    @return
+
+    matriz_confusao : pandas.dataframe - Matriz de confusao do modelo
+    """
+
+    y_real = pd.Series(testset_lbls, name="Real")
+    y_prev = pd.Series(predict_labels, name="Previsto")
+
+    matriz_confusao = pd.crosstab(y_real, y_prev)
+    print matriz_confusao
+
+    return matriz_confusao
+
+
+"""
+ Fazendo dois tipos de divisao para conjunto de treino e testes:
+
+ 1 - Divide-se o conjunto total (das 416 amostras) em
+ dois pedacos, aleatoriamente, sem saber quantos elementos de cada
+ conjunto foram escolhidos.
+
+ 2 - Garante-se o mesmo numero de elementos de teste em cada
+ classe, ou seja, sabe-se que para cada uma das 8 classes, 26 foram
+ usados para treino e os demais serao usados para teste.
+
+"""
+# learnset_dt, learnset_lbls, testset_dt, testset_lbls = geraConjTreinoTeste(feat, lbl, test_size)
 #
-# # Definicao do conjunto de testes
-# testset_data = atributos[test_mask]
-# testset_labels = rotulos[test_mask]
-
-# os.system('spd-say "Classifier Set!" -r -50')
-#
+# # Define o classificador. Neste caso, 1NN
 # knn = KNeighborsClassifier(n_neighbors=1)
-# knn.fit(learnset_data, learnset_labels)
+# knn.fit(learnset_dt, learnset_lbls)
 #
-# predict_labels = knn.predict(testset_data)
+# predict_labels = knn.predict(testset_dt)
 #
-# y_real = pd.Series(testset_labels, name="Real")
+# y_real = pd.Series(testset_lbls, name="Real")
 # y_prev = pd.Series(predict_labels, name="Previsto")
 #
 # matriz_confusao = pd.crosstab(y_real, y_prev)
+# print matriz_confusao
