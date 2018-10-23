@@ -1,7 +1,36 @@
 import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import confusion_matrix
 import pandas as pd
 import itertools
+import matplotlib.pyplot as plt
+
+
+def plot_confusion_matrix(cm, classes, title='Matriz de Confusao',
+                          cmap=plt.cm.Blues):
+    """
+    This function prints and plots the confusion matrix.
+    Codigo original disponivel em:
+    http://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html
+    """
+
+    print(cm)
+
+    plt.imshow(cm, interpolation='nearest', cmap=cmap)
+    plt.title(title)
+    plt.colorbar()
+    tick_marks = np.arange(len(classes))
+    plt.xticks(tick_marks, classes, rotation=45)
+    plt.yticks(tick_marks, classes)
+    fmt = 'd'
+    thresh = cm.max()/2.
+    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
+        plt.text(j, i, format(cm[i, j], fmt), horizontalalignment="center",
+                 color="white" if cm[i, j] > thresh else "black")
+
+    plt.ylabel('Real')
+    plt.xlabel('Previsto')
+    plt.tight_layout()
 
 
 def flat_list(lista):
@@ -140,7 +169,7 @@ def classificadorKNN(learn_data, learn_labels, test_data, k=1):
     return predict_labels
 
 
-def geraMatrizConfusao(testset_lbls, predict_labels):
+def geraMatrizConfusao(testset_lbls, predict_labels, metodo='sklearn'):
     """
     Dado os rotulos do conjunto de teste e os rotulos previstos pelo modelo
     gera uma matriz de confusao
@@ -149,23 +178,29 @@ def geraMatrizConfusao(testset_lbls, predict_labels):
     @Params
     testset_lbls    : numpy.ndarray - Vetor de rotulos do conjunto de testes
     predict_labels  : numpy.ndarray - Vetor de rotulos produzidos pelo modelo
-
+    metodo          : string        - Metodo usado para gera a matriz de
+                                      Confusao
+                                      'pandas'  - usa Pandas
+                                      'sklearn' - usa sklearn
     Saida
     @return
 
     matriz_confusao : pandas.dataframe - Matriz de confusao do modelo
+                      numpy.ndarray    - Matriz de confusao do modelo
     """
+    if (metodo == 'sklearn'):
+        cnf_matrix = confusion_matrix(testset_lbls, predict_labels)
+    elif(metodo == 'pandas'):
+        y_real = pd.Series(testset_lbls, name="Real")
+        y_prev = pd.Series(predict_labels, name="Previsto")
+        cnf_matrix = pd.crosstab(y_real, y_prev)
 
-    y_real = pd.Series(testset_lbls, name="Real")
-    y_prev = pd.Series(predict_labels, name="Previsto")
+    print cnf_matrix
 
-    matriz_confusao = pd.crosstab(y_real, y_prev)
-    print matriz_confusao
-
-    return matriz_confusao
+    return cnf_matrix
 
 
-"""
+'''
  Fazendo dois tipos de divisao para conjunto de treino e testes:
 
  1 - Divide-se o conjunto total (das 416 amostras) em
@@ -175,18 +210,4 @@ def geraMatrizConfusao(testset_lbls, predict_labels):
  2 - Garante-se o mesmo numero de elementos de teste em cada
  classe, ou seja, sabe-se que para cada uma das 8 classes, 26 foram
  usados para treino e os demais serao usados para teste.
-
-"""
-# learnset_dt, learnset_lbls, testset_dt, testset_lbls = geraConjTreinoTeste(feat, lbl, test_size)
-#
-# # Define o classificador. Neste caso, 1NN
-# knn = KNeighborsClassifier(n_neighbors=1)
-# knn.fit(learnset_dt, learnset_lbls)
-#
-# predict_labels = knn.predict(testset_dt)
-#
-# y_real = pd.Series(testset_lbls, name="Real")
-# y_prev = pd.Series(predict_labels, name="Previsto")
-#
-# matriz_confusao = pd.crosstab(y_real, y_prev)
-# print matriz_confusao
+'''

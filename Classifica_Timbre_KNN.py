@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.io import wavfile as wav
-from sklearn.neighbors import KNeighborsClassifier
+# from sklearn.neighbors import KNeighborsClassifier
 import matplotlib.pyplot as plt
 import os
 import itertools
@@ -156,28 +156,57 @@ os.system('spd-say "Features extracted successfully!" -r -80')
 num_classes = 8
 num_amostras = TAM/num_classes  # numero de amostras de cada classe
 rotulos = rotula(len(arquivos), num_amostras)
-
+classes = ['Cello', 'Clarineta', 'Flauta', 'Oboe',
+           'Trombone', 'Trompete', 'Viola', 'Violino']
 
 # ========================================================
 #                     CLASSIFICADOR
 # ========================================================
 
-"""
- Fazendo dois tipos de divisao para conjunto de treino e testes:
 
- 1 - Divide-se o conjunto total (das 416 amostras) em
- dois pedacos, aleatoriamente, sem saber quantos elementos de cada
- conjunto foram escolhidos.
+# Fazendo dois tipos de divisao para conjunto de treino e testes:
+#
+# 1 - Divide-se o conjunto total (das 416 amostras) em
+# dois pedacos, aleatoriamente, sem saber quantos elementos de cada
+# conjunto foram escolhidos.
+#
+# 2 - Garante-se o mesmo numero de elementos de teste em cada
+# classe, ou seja, sabe-se que para cada uma das 8 classes, 26 foram
+# usados para treino e os demais serao usados para teste.
 
- 2 - Garante-se o mesmo numero de elementos de teste em cada
- classe, ou seja, sabe-se que para cada uma das 8 classes, 26 foram
- usados para treino e os demais serao usados para teste.
-
-"""
+# Metodo 1 - Dividindo todo o dataset em dois pedacos iguais para treino e
+# teste)
 tam_teste = len(rotulos)/2
 
-learn_data, learn_labels, test_data, test_labels = cl.geraConjTreinoTeste(atributos, rotulos, tam_teste)
+cj_treino, rot_treino, cj_teste, rot_teste = cl.geraConjTreinoTeste(atributos,
+                                                                    rotulos,
+                                                                    tam_teste)
+previsto = cl.classificadorKNN(cj_treino, rot_treino, cj_teste)
+m_conf = cl.geraMatrizConfusao(rot_teste, previsto)
 
-predict_labels = cl.classificadorKNN(learn_data, learn_labels, test_data, k=1)
+# Metodo 2 - Dividindo cada grupo ao meio. Metade para teste e a outra metade
+# para treino
 
-m_confusa = cl.geraMatrizConfusao(test_labels, predict_labels)
+tam_classe = 52
+tam_teste = tam_classe/2
+
+X_train, Y_train, X_test, Y_test, _ = cl.geraConjTreinoTesteClasse(atributos,
+                                                                   rotulos,
+                                                                   tam_classe,
+                                                                   tam_teste)
+grp_prev = cl.classificadorKNN(X_train, Y_train, X_test)
+m_conf_grp = cl.geraMatrizConfusao(Y_test, grp_prev)
+
+# Gera os graficos
+DEST = 'Figuras/'
+NOME1 = 'CM_ConjuntoTotalDiv2.png'
+plt.figure()
+cl.plot_confusion_matrix(m_conf, classes, title='Conjunto Total dividido em 2')
+plt.savefig(DEST+NOME1)
+plt.show()
+
+NOME2 = 'CM_DivisaoPorConjunto.png'
+plt.figure()
+cl.plot_confusion_matrix(m_conf_grp, classes, title='Divisao feita por grupo')
+plt.savefig(DEST+NOME2)
+plt.show()
