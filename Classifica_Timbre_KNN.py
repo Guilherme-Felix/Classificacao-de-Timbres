@@ -45,8 +45,8 @@ def pre_processa(dados, left_channel=0, debug=False):
 
 def gera_fft(dados):
     '''
-    Dado um array MONO que representa um audio, retorna a magnitude
-    da fft.(modulo de cada X(n)).
+    Dado um array MONO que representa um audio, retorna os coeficientes
+    da fft.
     '''
 
     fft_dados = np.fft.fft(dados)
@@ -107,13 +107,19 @@ for j in range(TAM):
     x = normaliza(x)
     X = gera_fft(x)
 
-    # Guarda a magnitude de X na escala log
+    # Guarda a magnitude de X
     mX = abs(X)
+
+    # Guarda a magnitude de X na escala log
+    mX_log = 20*np.log10(abs(X))
 
     # Pega apenas a metade do vetor
 
     N = len(X)
     mX = mX[:N/2]
+
+    mX_log = mX_log[:N/2]
+
     mX_cpy = mX.copy()
     mX_cpy = sorted(mX_cpy, reverse=True)
     mask = mX_cpy[:10]
@@ -125,10 +131,11 @@ for j in range(TAM):
         idx.append(index)
 
     idxs = [i[0][0] for i in idx]
-    # print(idx)
+
     k = np.arange(N)
     T = N/float(sr)
     freq = k/T
+
     if(PLOT is True):
         plt.plot(freq[:N/2], mX)
         plt.plot(freq[idxs], mX[idxs], 'ro', markersize=3)

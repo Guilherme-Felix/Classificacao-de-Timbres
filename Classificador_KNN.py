@@ -1,6 +1,21 @@
 import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
 import pandas as pd
+import itertools
+
+
+def flat_list(lista):
+    '''
+    Dada uma lista de listas, retorna um np.array com todos
+    os valores "corridos"
+    Exemplo: Se a entrada for [ [1,2,3], [4, 5, 6] ]
+    a saida sera [1, 2, 3, 4, 5, 6]
+
+    @param lista : lista de listas
+    @return np.array : np.array com todos os elementos da lista
+    '''
+
+    return np.array(list(itertools.chain.from_iterable(lista)))
 
 
 def geraConjTreinoTesteClasse(feat, labels, tam_classe, n_treino):
@@ -57,12 +72,12 @@ def geraConjTreinoTesteClasse(feat, labels, tam_classe, n_treino):
 
         indexes.append(perm)
 
-    learn_data = np.array(learn_data)
-    learn_labels = np.array(learn_labels)
-    test_data = np.array(test_data)
-    test_labels = np.array(test_labels)
+    learn_data = flat_list(learn_data)
+    learn_labels = flat_list(learn_labels)
+    test_data = flat_list(test_data)
+    test_labels = flat_list(test_labels)
 
-    indexes = np.array(indexes)
+    indexes = flat_list(indexes)
 
     return learn_data, learn_labels, test_data, test_labels, indexes
 
