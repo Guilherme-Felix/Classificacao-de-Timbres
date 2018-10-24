@@ -1,4 +1,5 @@
 import numpy as np
+from sklearn import ensemble
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import confusion_matrix
 import pandas as pd
@@ -163,6 +164,10 @@ def classificadorKNN(learn_data, learn_labels, test_data, k=1):
 
     '''
     knn = KNeighborsClassifier(n_neighbors=k)
+
+    original_params = {'n_estimators': 1000, 'max_leaf_nodes': 4, 'max_depth': None, 'random_state': 2,
+                   'min_samples_split': 5, 'learning_rate': 0.1, 'max_features': 2}
+    knn = ensemble.GradientBoostingClassifier(**original_params)
     knn.fit(learn_data, learn_labels)
     predict_labels = knn.predict(test_data)
 
