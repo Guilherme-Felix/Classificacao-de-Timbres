@@ -1,0 +1,15 @@
+--------------------  Resultados  --------------------
+30 Features
+Melhor acuracia:  0.54
+Conjunto de atributos:  [freq, mX]
+--------------------------------------------------------------------------------
+Forward
+Melhor acuracia:  0.52
+Conjunto de atributos:  [freq, mX, X]
+Numero de atributos:  12.0
+--------------------------------------------------------------------------------
+Backward
+Melhor acuracia:  0.54
+Conjunto de atributos:  [freq, mX]
+Numero de atributos:  17.0
+--------------------------------------------------------------------------------
