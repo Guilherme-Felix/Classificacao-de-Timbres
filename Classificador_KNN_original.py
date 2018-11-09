@@ -76,7 +76,7 @@ def geraConjTreinoTesteClasse(feat, labels, tam_classe, n_treino):
     test_labels:  np.array - Conjunto de rotulos de teste
     '''
 
-    np.random.seed(42)
+    np.random.seed()
 
     N = len(feat)
     step = tam_classe
@@ -130,7 +130,7 @@ def geraConjTreinoTeste(atributos, rotulos, tam_teste):
     test_data:    np.array - Conjunto de teste
     test_labels:  np.array - Conjunto de rotulos de teste
     '''
-    np.random.seed(42)
+    np.random.seed()
     indices = np.random.permutation(len(rotulos))
     learn_mask = indices[:-tam_teste]
     test_mask = indices[-tam_teste:]

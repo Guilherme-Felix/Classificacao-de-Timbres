@@ -116,6 +116,57 @@ def classifica(feat, labels, N_class, class_size, train_size, classifier='1NN'):
     return Acc, m_conf_grp
 
 
+def plotResultados(res, DEST='Figuras/'):
+    '''
+    Funcao para gerar os diagramas (matriz de confusao).
+    Entrada:
+        res : Vetor de resultados: list
+        DEST: Pasta de destino: string
+    '''
+
+    NOMES = ['30 Features', 'Forward', 'Backward']
+
+    for i in range(0, len(res), 2):
+        #   print 'i = ', i, '\n', 80*'='
+        plt.figure()
+        mc = res[i+1].astype(int)
+        Ac = ("%.2f" % res[i])
+        title = NOMES[i/2] + ". Acuracia: " + Ac
+        cl.plot_confusion_matrix(mc, classes, title=title)
+        plt.savefig(DEST+NOMES[i/2])
+
+
+def gravaArquivoSaida(DEST='./', NOME='Resultados'):
+    '''
+    Guarda os resultados em um arquivo de saida .txt
+
+    Entrada:
+        DEST : Pasta de destino : string
+        NOME : Nome do arquivo de saida: string
+    '''
+    f = open(NOME+'txt', 'w')
+
+    print >> f, 20*'-', " Resultados ", 20*'-'
+    print >> f, "30 Features"
+    print >> f, "Melhor acuracia: ", ("%.2f" % res[0])
+    print >> f, "Conjunto de atributos: ", VetorAtributos[max_ac_idx]
+    print >> f, 80*'-'
+
+    print >> f, "Forward"
+    print >> f, "Melhor acuracia: ", ("%.2f" % res[2])
+    print >> f, "Conjunto de atributos: ", VetorAtributos[max_ac_fwd_idx]
+    print >> f, "Numero de atributos: ", N_feat_fwd[max_ac_fwd_idx]
+    print >> f, 80*'-'
+
+    print >> f, "Backward"
+    print >> f, "Melhor acuracia: ", ("%.2f" % res[4])
+    print >> f, "Conjunto de atributos: ", VetorAtributos[max_ac_bwd_idx]
+    print >> f, "Numero de atributos: ", N_feat_fwd[max_ac_bwd_idx]
+    print >> f, 80*'-'
+
+    f.close()
+
+
 # ==============================================
 #               INICIO DO PROCEDIMENTO
 # ==============================================
@@ -214,7 +265,7 @@ atributos5 = np.array(atributos5)
 
 feat = [atributos1, atributos2, atributos3, atributos4, atributos5]
 
-# os.system('spd-say "Features extracted successfully!" -r -80')
+os.system('spd-say "Features extracted successfully!" -r -80')
 
 num_classes = 8
 num_amostras = TAM/num_classes  # numero de amostras de cada classe
@@ -279,38 +330,31 @@ max_ac_bwd_idx = np.argmax(acc_bwd)
 res = [max_ac, m_confs[max_ac_idx], max_ac_fwd, m_confs_fwd[max_ac_fwd_idx],
        max_ac_bwd, m_confs_bwd[max_ac_bwd_idx]]
 
-# Plot
-DEST = 'Figuras/'
-NOMES = ['30 Features', 'Forward', 'Backward']
+plotResultados(res, DEST='./')
 
-for i in range(0, len(res), 2):
-    print 'i = ', i, '\n', 80*'='
-    plt.figure()
-    mc = res[i+1].astype(int)
-    Ac = ("%.2f" % res[i])
-    title = NOMES[i/2] + ". Acuracia: " + Ac
-    cl.plot_confusion_matrix(mc, classes, title=title)
-    plt.savefig(DEST+NOMES[i/2])
+os.system('spd-say "Procedure Terminated!" -r -80')
 
 # Guarda saida num txt
-f = open("Resultados.txt", 'w')
+gravaArquivoSaida(NOME='Resultados_17_27')
 
-print >> f, 20*'-', " Resultados ", 20*'-'
-print >> f, "30 Features"
-print >> f, "Melhor acuracia: ", ("%.2f" % res[0])
-print >> f, "Conjunto de atributos: ", VetorAtributos[max_ac_idx]
-print >> f, 80*'-'
-
-print >> f, "Forward"
-print >> f, "Melhor acuracia: ", ("%.2f" % res[2])
-print >> f, "Conjunto de atributos: ", VetorAtributos[max_ac_fwd_idx]
-print >> f, "Numero de atributos: ", N_feat_fwd[max_ac_fwd_idx]
-print >> f, 80*'-'
-
-print >> f, "Backward"
-print >> f, "Melhor acuracia: ", ("%.2f" % res[4])
-print >> f, "Conjunto de atributos: ", VetorAtributos[max_ac_bwd_idx]
-print >> f, "Numero de atributos: ", N_feat_fwd[max_ac_bwd_idx]
-print >> f, 80*'-'
-
-f.close()
+# f = open("Resultados.txt", 'w')
+# 
+# print >> f, 20*'-', " Resultados ", 20*'-'
+# print >> f, "30 Features"
+# print >> f, "Melhor acuracia: ", ("%.2f" % res[0])
+# print >> f, "Conjunto de atributos: ", VetorAtributos[max_ac_idx]
+# print >> f, 80*'-'
+# 
+# print >> f, "Forward"
+# print >> f, "Melhor acuracia: ", ("%.2f" % res[2])
+# print >> f, "Conjunto de atributos: ", VetorAtributos[max_ac_fwd_idx]
+# print >> f, "Numero de atributos: ", N_feat_fwd[max_ac_fwd_idx]
+# print >> f, 80*'-'
+# 
+# print >> f, "Backward"
+# print >> f, "Melhor acuracia: ", ("%.2f" % res[4])
+# print >> f, "Conjunto de atributos: ", VetorAtributos[max_ac_bwd_idx]
+# print >> f, "Numero de atributos: ", N_feat_fwd[max_ac_bwd_idx]
+# print >> f, 80*'-'
+# 
+# f.close()

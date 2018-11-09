@@ -151,7 +151,7 @@ for j in range(TAM):
 
 atributos = np.array(atributos)
 
-os.system('spd-say "Features extracted successfully!" -r -80')
+# os.system('spd-say "Features extracted successfully!" -r -80')
 
 num_classes = 8
 num_amostras = TAM/num_classes  # numero de amostras de cada classe
@@ -176,13 +176,13 @@ classes = ['Cello', 'Clarineta', 'Flauta', 'Oboe',
 
 # Metodo 1 - Dividindo todo o dataset em dois pedacos iguais para treino e
 # teste)
-tam_teste = len(rotulos)/2
+#tam_teste = len(rotulos)/2
 
-cj_treino, rot_treino, cj_teste, rot_teste = cl.geraConjTreinoTeste(atributos,
-                                                                    rotulos,
-                                                                    tam_teste)
-previsto = cl.classificadorKNN(cj_treino, rot_treino, cj_teste)
-m_conf = cl.geraMatrizConfusao(rot_teste, previsto)
+#cj_treino, rot_treino, cj_teste, rot_teste = cl.geraConjTreinoTeste(atributos,
+#                                                                    rotulos,
+#                                                                   tam_teste)
+#previsto = cl.classificadorKNN(cj_treino, rot_treino, cj_teste)
+#m_conf = cl.geraMatrizConfusao(rot_teste, previsto)
 
 # Metodo 2 - Dividindo cada grupo ao meio. Metade para teste e a outra metade
 # para treino
@@ -198,15 +198,15 @@ grp_prev = cl.classificadorKNN(X_train, Y_train, X_test)
 m_conf_grp = cl.geraMatrizConfusao(Y_test, grp_prev)
 
 # Gera os graficos
-DEST = 'Figuras/'
-NOME1 = 'CM_ConjuntoTotalDiv2.png'
-plt.figure()
-cl.plot_confusion_matrix(m_conf, classes, title='Conjunto Total dividido em 2')
-plt.savefig(DEST+NOME1)
-plt.show()
+#DEST = 'Figuras/'
+#NOME1 = 'CM_ConjuntoTotalDiv2.png'
+#plt.figure()
+#cl.plot_confusion_matrix(m_conf, classes, title='Conjunto Total dividido em 2')
+#plt.savefig(DEST+NOME1)
+#plt.show()
 
-NOME2 = 'CM_DivisaoPorConjunto.png'
-plt.figure()
-cl.plot_confusion_matrix(m_conf_grp, classes, title='Divisao feita por grupo')
-plt.savefig(DEST+NOME2)
-plt.show()
+#NOME2 = 'CM_DivisaoPorConjunto.png'
+#plt.figure()
+#cl.plot_confusion_matrix(m_conf_grp, classes, title='Divisao feita por grupo')
+#plt.savefig(DEST+NOME2)
+#plt.show()
