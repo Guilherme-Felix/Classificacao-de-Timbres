@@ -3,7 +3,8 @@ from scipy.io import wavfile as wav
 import matplotlib.pyplot as plt
 import os
 import itertools
-import Classificador_KNN as cl
+# import Classificador_KNN as cl
+import Classificador_KNN_B as cl
 TAMANHO_IDEAL = 2**16
 
 
@@ -184,6 +185,8 @@ atributos2 = []  # [freq, mX^2, mX]
 atributos3 = []  # [freq, mX]
 atributos4 = []  # [freq, mX^2]
 atributos5 = []  # [mX, mX^2]
+# atributos6 = []  [freq, mX, ph]
+# atributos7 = []  [freq, mX, ph, X]
 
 VetorAtributos = ['[freq, mX, X]', '[freq, mX^2, mX]',
                   '[freq, mX]', '[freq, mX^2]', '[mX, mX^2]']
@@ -194,7 +197,7 @@ for j in range(TAM):
     # Abre arquivo
     print "Arquivo: ", j, '\n'
     sr, x = wav.read(diretorio+arquivos[j])  # sr = sample rate = 44100
-    x = pre_processa(x)
+    x = pre_processa(x)  # Fazer 'fade in / out'
     x = normaliza(x)
     X = gera_fft(x)
 
@@ -309,7 +312,7 @@ for i in range(5):
             m_confs_fwd[i] = mc
 
         # Backward
-        feature = feat[i][:, :-j+30]
+        feature = feat[i][:, j:]
         ac, mc = classifica(feature, rotulos, num_classes,
                             tam_classe, tam_teste)
         if (ac > acc_bwd[i]):
@@ -338,23 +341,23 @@ os.system('spd-say "Procedure Terminated!" -r -80')
 gravaArquivoSaida(NOME='Resultados_17_27')
 
 # f = open("Resultados.txt", 'w')
-# 
+#
 # print >> f, 20*'-', " Resultados ", 20*'-'
 # print >> f, "30 Features"
 # print >> f, "Melhor acuracia: ", ("%.2f" % res[0])
 # print >> f, "Conjunto de atributos: ", VetorAtributos[max_ac_idx]
 # print >> f, 80*'-'
-# 
+#
 # print >> f, "Forward"
 # print >> f, "Melhor acuracia: ", ("%.2f" % res[2])
 # print >> f, "Conjunto de atributos: ", VetorAtributos[max_ac_fwd_idx]
 # print >> f, "Numero de atributos: ", N_feat_fwd[max_ac_fwd_idx]
 # print >> f, 80*'-'
-# 
+#
 # print >> f, "Backward"
 # print >> f, "Melhor acuracia: ", ("%.2f" % res[4])
 # print >> f, "Conjunto de atributos: ", VetorAtributos[max_ac_bwd_idx]
 # print >> f, "Numero de atributos: ", N_feat_fwd[max_ac_bwd_idx]
 # print >> f, 80*'-'
-# 
+#
 # f.close()
