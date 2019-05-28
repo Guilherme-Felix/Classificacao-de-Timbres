@@ -89,9 +89,12 @@ for j in (idx1, idx2):
     nomes.append(arquivos[j])
     print "Arquivo: ", arquivos[j], '\n'
     sr, x = wav.read(diretorio+arquivos[j])  # sr = sample rate = 44100
-    x = pre_processa(x)  # Fazer 'fade in / out'
+    x = pre_processa(x)                      # Fazer 'fade in / out'
     x = normaliza(x)
     X = gera_fft(x)
+
+    # Guarda a parte real de X
+    ReX = np.real(X)
 
     # Guarda a magnitude de X
     mX = abs(X)
@@ -105,15 +108,52 @@ for j in (idx1, idx2):
     # Pega apenas a metade do vetor
 
     N = len(X)
-    mX = mX[:N/2]
     x = x[:N/2]
+    ReX = ReX[:N/2]
+    mX = mX[:N/2]
     mX_log = mX_log[:N/2]
 
+    ReX_cpy = ReX.copy()
     mX_cpy = mX.copy()
+    # print de verificacao. Antes da ordenacao
+   
+    f = open('atrib_'+str(arquivos[j][:-7])+'.txt', 'w')
+
+    print >> f, 'ATRIBUTOS ANTES DA ORDENACAO'
+    print >> f, arquivos[j]
+    print >> f, 'FFT'
+    print >> f, X[:10]
+    print >> f, 'Parte Real'
+    print >> f, ReX_cpy[:10]
+    print >> f, 'Magnitude'
+    print >> f, mX_cpy[:10]
+    print >> f, 80*'-'
+
+    ReX_cpy = sorted(ReX_cpy, reverse=True)
+    mask_Rex = ReX_cpy[:10]
+
     mX_cpy = sorted(mX_cpy, reverse=True)
     mask = mX_cpy[:10]
 
-    # determinar os indices dos 10 maiores componentes
+    # print de verificacao. Depois da ordenacao
+    print >> f, 'ATRIBUTOS DEPOIS DA ORDENACAO'
+    print >> f, 'Parte Real'
+    print >> f, ReX_cpy[:10]
+    print >> f, 'Magnitude'
+    print >> f, mask
+    print >> f, 80*'='
+    
+    f.close()
+
+    # determinar os indices dos 10 maiores componentes. PARTE REAL
+    idx = []
+    for i in range(len(mask_Rex)):
+        index = np.where(ReX == mask_Rex[i])
+        idx.append(index)
+
+    idxs_ReX = [i[0][0] for i in idx]
+
+    # determinar os indices dos 10 maiores componentes. MAGNITUDE
     idx = []
     for i in range(len(mask)):
         index = np.where(mX == mask[i])
@@ -121,7 +161,7 @@ for j in (idx1, idx2):
 
     idxs = [i[0][0] for i in idx]
 
-    saida.append([x, mX, idxs])
+    saida.append([x, ReX, mX, idxs_ReX, idxs])
 
 # Definicao do vetor de frequencias
 k = np.arange(N)
@@ -132,9 +172,9 @@ freq = k/T
 tempo = k/float(sr)
 
 # Selecao de exatamente uma oscilacao para o C4 = 261.76 Hz
-f_do = 261.76    # Hz
-T_do = 1/f_do    # s, aproximadamente 0.0382 s
-delta = int(sr*T_do)
+f_do = 261.76           # Hz
+T_do = 1/f_do           # s, aproximadamente 0.0382 s
+delta = int(2*sr*T_do)  # pega dois periodos do Do.
 
 # PLOT DOMINIO DO TEMPO - TAMANHO IGUAL 2^15 = 0.7 s
 
@@ -154,12 +194,12 @@ if(PLOT is True):
         plt.savefig(DEST)
 #        plt.show()
 
-# PLOT DOMINIO DO TEMPO - TAMANHO IGUAL a um periodo C5 = 0.0038s
+# PLOT DOMINIO DO TEMPO - TAMANHO IGUAL a dois periodos C5 = 2*0.0038s
 
 if(PLOT is True):
     for j in (0, 1):
         Titulo = "Dominio do Tempo: " + nomes[j][:-7]
-        nomeArq = "UmPeriodoC4_" + nomes[j][:-7] + ".png"
+        nomeArq = "DoisPeriodosC4_" + nomes[j][:-7] + ".png"
         DEST = pastaDestino + nomeArq
 
         plt.clf()
@@ -167,7 +207,7 @@ if(PLOT is True):
         plt.xlabel("Tempo (s)")
         plt.ylabel("Amplitude")
         plt.title(Titulo)
-        plt.savefig(DEST)
+#        plt.savefig(DEST)
 
 # PLOT DOMINIO DA FREQUENCIA - PARA OS 10 MAIORES VALORES mX
 
@@ -179,13 +219,14 @@ if(PLOT is True):
 
         plt.clf()
         plt.plot(freq[:2**12], saida[j][1][:2**12], 'r')
+#        plt.plot(freq[:2**12], saida[j][2][:2**12], 'b.')
 
-#       plt.plot(freq[idxs], mX[idxs], 'ro', markersize=3)
-        plt.xticks(freq[idxs])
+#        plt.plot(freq[idxs], mX[idxs], 'ro', markersize=3)
+        plt.xticks(freq[saida[j][3]])
         plt.xlabel("Frequencia (Hz)")
         plt.ylabel("Magnitude")
         plt.title(Titulo)
-        plt.savefig(DEST)
-#        plt.show()
+#        plt.savefig(DEST)
+        plt.show()
 
 os.system('spd-say "Features extracted successfully!" -r -80')
