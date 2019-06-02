@@ -116,7 +116,7 @@ for j in (idx1, idx2):
     ReX_cpy = ReX.copy()
     mX_cpy = mX.copy()
     # print de verificacao. Antes da ordenacao
-   
+
     f = open('atrib_'+str(arquivos[j][:-7])+'.txt', 'w')
 
     print >> f, 'ATRIBUTOS ANTES DA ORDENACAO'
@@ -142,7 +142,7 @@ for j in (idx1, idx2):
     print >> f, 'Magnitude'
     print >> f, mask
     print >> f, 80*'='
-    
+
     f.close()
 
     # determinar os indices dos 10 maiores componentes. PARTE REAL
@@ -207,7 +207,7 @@ if(PLOT is True):
         plt.xlabel("Tempo (s)")
         plt.ylabel("Amplitude")
         plt.title(Titulo)
-#        plt.savefig(DEST)
+        plt.savefig(DEST)
 
 # PLOT DOMINIO DA FREQUENCIA - PARA OS 10 MAIORES VALORES mX
 
@@ -218,15 +218,16 @@ if(PLOT is True):
         DEST = pastaDestino + nomeArq
 
         plt.clf()
-        plt.plot(freq[:2**12], saida[j][1][:2**12], 'r')
+        plt.plot(freq[:2**12], saida[j][2][:2**12], 'r')
 #        plt.plot(freq[:2**12], saida[j][2][:2**12], 'b.')
 
 #        plt.plot(freq[idxs], mX[idxs], 'ro', markersize=3)
-        plt.xticks(freq[saida[j][3]])
+#        plt.xticks(freq[saida[j][3]])
         plt.xlabel("Frequencia (Hz)")
         plt.ylabel("Magnitude")
         plt.title(Titulo)
-#        plt.savefig(DEST)
-        plt.show()
+        plt.grid()
+        plt.savefig(DEST)
+#        plt.show()
 
 os.system('spd-say "Features extracted successfully!" -r -80')
