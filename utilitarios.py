@@ -70,7 +70,7 @@ def preProcessamento(arquivo):
     - Normaliza (divide todas as posicoes pelo valor maximo)
     - Gera a fft com o mesmo tamanho da amostra
     - Guarda a magnitude (mX)
-    - Guarda a magnitude na escola log (20*log10(mX))
+    - Guarda a magnitude na escala log (20*log10(mX))
     - Guarda a magnitude quadrada (mX^2)
     - Guarda a fase (phX)
     - Guarda a metade dos vetores
@@ -123,6 +123,6 @@ def preProcessamento(arquivo):
     idxs = [i[0][0] for i in idx]
 
     # Vetores com as saidas
-    saida = [sr, x, mX, mX_sq, phX, idxs]
+    saida = [sr, x, mX, mX_sq, phX, idxs], X
 
     return saida
