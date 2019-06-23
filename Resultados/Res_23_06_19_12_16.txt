@@ -1,0 +1,33 @@
+Vetores Completos
+Acuracia:  0.36
+Conjunto de atributos:  [freq, mX,mX^2]
+-------------------------------------------------------------------------------- 
+
+Vetores Completos
+Acuracia:  0.53
+Conjunto de atributos:  [freq, mX]
+-------------------------------------------------------------------------------- 
+
+Vetores Completos
+Acuracia:  0.32
+Conjunto de atributos:  [freq, mX^2]
+-------------------------------------------------------------------------------- 
+
+Vetores Completos
+Acuracia:  0.27
+Conjunto de atributos:  [mX, mX^2]
+-------------------------------------------------------------------------------- 
+
+Vetores Completos
+Acuracia:  0.49
+Conjunto de atributos:  [freq, mX, ph]
+-------------------------------------------------------------------------------- 
+
+Vetores Completos
+Acuracia:  0.35
+Conjunto de atributos:  [freq, mX, ph, mX^2]
+-------------------------------------------------------------------------------- 
+
+Progressivo
+Acuracia:  0.55
+Conjunto de atributos:  [freq, mX, ph, mX^2]

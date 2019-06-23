@@ -5,6 +5,7 @@ import os
 import itertools
 import Classificador_KNN_original as cl
 # import Classificador_KNN_B as cl
+import datetime as dt
 TAMANHO_IDEAL = 2**16
 
 
@@ -117,27 +118,26 @@ def classifica(feat, labels, N_class, class_size, train_size, classifier='1NN'):
     return Acc, m_conf_grp
 
 
-def plotResultados(res, DEST='Figuras/'):
+def plotResultados(titulo, matConf, NOME='Resultados', DEST='./Resultados/'):
     '''
     Funcao para gerar os diagramas (matriz de confusao).
     Entrada:
-        res : Vetor de resultados: list
-        DEST: Pasta de destino: string
+        titulo  : string   titulo do diagramas
+        matConf : np.array Matriz de Confusao
+        DEST    : string   Pasta de destino
     '''
 
-    NOMES = ['Vetor Completo', 'Forward', 'Backward']
+    now = dt.datetime.now()
+    agr = now.strftime("_%d_%m_%y_%H_%M")
+    ext = ".png"
 
-    for i in range(0, len(res), 2):
-        #   print 'i = ', i, '\n', 80*'='
-        plt.figure()
-        mc = res[i+1].astype(int)
-        Ac = ("%.2f" % res[i])
-        title = NOMES[i/2] + ". Acuracia: " + Ac
-        cl.plot_confusion_matrix(mc, classes, title=title)
-        plt.savefig(DEST+NOMES[i/2]+'22_07_19.png')
+    plt.figure()
+    title = titulo
+    cl.plot_confusion_matrix(mc, classes, title=title)
+    plt.savefig(DEST + NOME + agr + ext)
 
 
-def gravaArquivoSaida(res, DEST='./', NOME='Resultados'):
+def gravaArquivoSaida(titulo, atrib, acc, n_atrib=0, DEST='./Resultados/', NOME='Res'):
     '''
     Guarda os resultados em um arquivo de saida .txt
 
@@ -145,25 +145,18 @@ def gravaArquivoSaida(res, DEST='./', NOME='Resultados'):
         DEST : Pasta de destino : string
         NOME : Nome do arquivo de saida: string
     '''
-    f = open(NOME+'txt', 'w')
+    now = dt.datetime.now()
+    agr = now.strftime("_%d_%m_%y_%H_%M")
+    ext = ".txt"
 
-    print >> f, 20*'-', " Resultados ", 20*'-'
-    print >> f, "Vetor completo"
-    print >> f, "Melhor acuracia: ", ("%.2f" % res[0])
-    print >> f, "Conjunto de atributos: ", VetorAtributos[max_ac_idx]
-    print >> f, 80*'-'
+    f = open(DEST + NOME + agr + ext, 'a+')
 
-    print >> f, "Forward"
-    print >> f, "Melhor acuracia: ", ("%.2f" % res[2])
-    print >> f, "Conjunto de atributos: ", VetorAtributos[max_ac_fwd_idx]
-    print >> f, "Numero de atributos: ", N_feat_fwd[max_ac_fwd_idx]
-    print >> f, 80*'-'
-
-    print >> f, "Backward"
-    print >> f, "Melhor acuracia: ", ("%.2f" % res[4])
-    print >> f, "Conjunto de atributos: ", VetorAtributos[max_ac_bwd_idx]
-    print >> f, "Numero de atributos: ", N_feat_fwd[max_ac_bwd_idx]
-    print >> f, 80*'-'
+    print >> f, titulo
+    print >> f, "Acuracia: ", ("%.2f" % acc)
+    print >> f, "Conjunto de atributos: ", atrib
+    if (n_atrib != 0):
+        print >> f, "Numero de atributos: ", n_atrib
+    print >> f, 80*'-', '\n'
 
     f.close()
 
@@ -289,17 +282,19 @@ tam_teste = tam_classe/2
 acc = []      # guarda as acuracias para os 6 vetores de atributos
 m_confs = []  # guarda as matrizes de confusao para os 6 vetores
 
-acc_fwd = np.zeros(6)     # guarda as melhores acuracias para o forward
-N_feat_fwd = np.zeros(6)  # guarda o numero de atributos para o forward
+# tamanho dos vetores para guardar os resultados
+S = len(feat) 
+acc_fwd = np.zeros(S)     # guarda as melhores acuracias para o forward
+N_feat_fwd = np.zeros(S)  # guarda o numero de atributos para o forward
 # guarda as matrizes de confusao para os melhores features do forward
-m_confs_fwd = np.zeros([6, 8, 8])
+m_confs_fwd = np.zeros([S, 8, 8])
 
-acc_bwd = np.zeros(6)     # guarda as melhores acuracias para o backward
-N_feat_bwd = np.zeros(6)  # guarda o numero de atributos para o backward
+acc_bwd = np.zeros(S)     # guarda as melhores acuracias para o backward
+N_feat_bwd = np.zeros(S)  # guarda o numero de atributos para o backward
 # guarda as matrizes de confusao para os melhores features do backward
-m_confs_bwd = np.zeros([6, 8, 8])
+m_confs_bwd = np.zeros([S, 8, 8])
 
-for i in range(6):
+for i in range(S):
     ac, mc = classifica(feat[i], rotulos, num_classes, tam_classe, tam_teste)
     acc.append(ac)
     m_confs.append(mc)
@@ -339,31 +334,30 @@ max_ac_bwd_idx = np.argmax(acc_bwd)
 Res = [max_ac, m_confs[max_ac_idx], max_ac_fwd, m_confs_fwd[max_ac_fwd_idx],
        max_ac_bwd, m_confs_bwd[max_ac_bwd_idx]]
 
-plotResultados(Res, DEST='./')
+titulos = [VetorAtributos[max_ac_idx] + ' Acuracia:' + str(round(max_ac, 3)),
+           'Progressivo ' + 'Acuracia:' + str(round(max_ac_fwd, 2)),
+           'Regressivo ' + 'Acuracia: ' + str(round(max_ac_bwd, 2))]
 
-os.system('spd-say "Procedure Terminated!" -r -80')
+nomesArq = ['Vetor completo', 'Progressivo', 'Regressivo']
+# Desenha matriz de confusao
+for i in range(3):
+    tit = titulos[i]
+    j = 2*i + 1
+    mconf = Res[j]
+    nome = nomesArq[i]
+    plotResultados(tit, mconf, NOME=nome)
 
 # Guarda saida num txt
-gravaArquivoSaida(Res, NOME='Resultados_22_07_19')
+for i in range(S):
+    tit = 'Vetores Completos'
+    gravaArquivoSaida(tit, VetorAtributos[i], acc[i])
 
-# f = open("Resultados.txt", 'w')
-#
-# print >> f, 20*'-', " Resultados ", 20*'-'
-# print >> f, "30 Features"
-# print >> f, "Melhor acuracia: ", ("%.2f" % res[0])
-# print >> f, "Conjunto de atributos: ", VetorAtributos[max_ac_idx]
-# print >> f, 80*'-'
-#
-# print >> f, "Forward"
-# print >> f, "Melhor acuracia: ", ("%.2f" % res[2])
-# print >> f, "Conjunto de atributos: ", VetorAtributos[max_ac_fwd_idx]
-# print >> f, "Numero de atributos: ", N_feat_fwd[max_ac_fwd_idx]
-# print >> f, 80*'-'
-#
-# print >> f, "Backward"
-# print >> f, "Melhor acuracia: ", ("%.2f" % res[4])
-# print >> f, "Conjunto de atributos: ", VetorAtributos[max_ac_bwd_idx]
-# print >> f, "Numero de atributos: ", N_feat_fwd[max_ac_bwd_idx]
-# print >> f, 80*'-'
-#
-# f.close()
+# Guarda saida do Progressivo e Regressivo em um txt
+tit = 'Progressivo'
+gravaArquivoSaida(tit, VetorAtributos[max_ac_fwd_idx], max_ac_fwd,
+                  N_feat_fwd[max_ac_fwd_idx])
+
+tit = 'Regressivo'
+gravaArquivoSaida(tit, VetorAtributos[max_ac_bwd_idx], max_ac_bwd,
+                  N_feat_bwd[max_ac_bwd_idx])
+os.system('spd-say "Procedure Terminated!" -r -80')

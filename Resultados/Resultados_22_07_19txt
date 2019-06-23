@@ -1,0 +1,15 @@
+--------------------  Resultados  --------------------
+Vetor completo
+Melhor acuracia:  0.52
+Conjunto de atributos:  [freq, mX]
+--------------------------------------------------------------------------------
+Forward
+Melhor acuracia:  0.55
+Conjunto de atributos:  [freq, mX, ph]
+Numero de atributos:  24.0
+--------------------------------------------------------------------------------
+Backward
+Melhor acuracia:  0.54
+Conjunto de atributos:  [freq, mX, ph]
+Numero de atributos:  24.0
+--------------------------------------------------------------------------------

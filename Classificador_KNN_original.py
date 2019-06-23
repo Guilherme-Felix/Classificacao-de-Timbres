@@ -29,8 +29,8 @@ def plot_confusion_matrix(cm, classes, title='Matriz de Confusao',
         plt.text(j, i, format(cm[i, j], fmt), horizontalalignment="center",
                  color="white" if cm[i, j] > thresh else "black")
 
-    plt.ylabel('Real')
-    plt.xlabel('Previsto')
+    plt.xlabel('Real')
+    plt.ylabel('Previsto')
     plt.tight_layout()
 
 
