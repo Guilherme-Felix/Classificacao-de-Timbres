@@ -1,0 +1,48 @@
+Acuracia Progressivo
+Acuracia:  0.5240
+Conjunto de atributos:  [freq, mX,mX^2]
+Numero de atributos:  15.0
+-------------------------------------------------------------------------------- 
+
+Acuracia Regressivo
+Acuracia:  0.3798
+Conjunto de atributos:  [freq, mX,mX^2]
+Numero de atributos:  12.0
+-------------------------------------------------------------------------------- 
+
+Acuracia Progressivo
+Acuracia:  0.5961
+Conjunto de atributos:  [freq, mX]
+Numero de atributos:  12.0
+-------------------------------------------------------------------------------- 
+
+Acuracia Regressivo
+Acuracia:  0.5288
+Conjunto de atributos:  [freq, mX]
+Numero de atributos:  28.0
+-------------------------------------------------------------------------------- 
+
+Acuracia Progressivo
+Acuracia:  0.4182
+Conjunto de atributos:  [freq, mX^2]
+Numero de atributos:  4.0
+-------------------------------------------------------------------------------- 
+
+Acuracia Regressivo
+Acuracia:  0.4182
+Conjunto de atributos:  [freq, mX^2]
+Numero de atributos:  21.0
+-------------------------------------------------------------------------------- 
+
+Acuracia Progressivo
+Acuracia:  0.4038
+Conjunto de atributos:  [mX, mX^2]
+Numero de atributos:  9.0
+-------------------------------------------------------------------------------- 
+
+Acuracia Regressivo
+Acuracia:  0.37010
+Conjunto de atributos:  [mX, mX^2]
+Numero de atributos:  25.0
+-------------------------------------------------------------------------------- 
+

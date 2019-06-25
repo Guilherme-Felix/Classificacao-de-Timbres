@@ -1,0 +1,3 @@
+Acuracia Progressivo
+Acuracia:  0.00
+Conjunto de atributos:  [freq, mX,mX^2]

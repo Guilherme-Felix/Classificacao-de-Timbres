@@ -126,6 +126,7 @@ def plotResultados(titulo, matConf, NOME='Resultados', DEST='./Resultados/'):
         matConf : np.array Matriz de Confusao
         DEST    : string   Pasta de destino
     '''
+    matConf = matConf.astype(int)
 
     now = dt.datetime.now()
     agr = now.strftime("_%d_%m_%y_%H_%M")
@@ -153,7 +154,7 @@ def gravaArquivoSaida(titulo, atrib, acc, n_atrib=0,
     f = open(DEST + NOME + agr + ext, 'a+')
 
     print >> f, titulo
-    print >> f, "Acuracia: ", ("%.2f" % acc)
+    print >> f, "Acuracia: ", ("%.4f" % acc)
     print >> f, "Conjunto de atributos: ", atrib
     if (n_atrib != 0):
         print >> f, "Numero de atributos: ", n_atrib
@@ -271,6 +272,57 @@ def preProcessamento():
             atributos4, atributos5, atributos6]
 
     return feat, VetorAtributos
+
+
+def Fwd(feat, rotulos, num_classes, tam_classe, tam_teste):
+
+    S = len(feat)
+    acc_fwd = np.zeros(S)     # guarda as melhores acuracias para o forward
+    N_feat_fwd = np.zeros(S)  # guarda o numero de atributos para o forward
+    # guarda as matrizes de confusao para os melhores features do forward
+    m_confs_fwd = np.zeros([S, num_classes, num_classes])
+    for i in range(S):
+        max_feat = feat[i].shape[1]
+
+        for j in range(max_feat):
+
+            feature = feat[i][:, :j+1]
+            ac, mc = classifica(feature, rotulos, num_classes,
+                                tam_classe, tam_teste)
+            if (ac > acc_fwd[i]):
+                acc_fwd[i] = ac
+                N_feat_fwd[i] = j
+                m_confs_fwd[i] = mc
+#            else:
+#                break
+
+    return acc_fwd, N_feat_fwd, m_confs_fwd
+
+
+def Bwd(feat, rotulos, num_classes, tam_classe, tam_teste):
+
+    S = len(feat)
+    acc_bwd = np.zeros(S)     # guarda as melhores acuracias para o forward
+    N_feat_bwd = np.zeros(S)  # guarda o numero de atributos para o forward
+    # guarda as matrizes de confusao para os melhores features do forward
+    m_confs_bwd = np.zeros([S, num_classes, num_classes])
+    for i in range(S):
+        max_feat = feat[i].shape[1]
+
+        for j in range(max_feat):
+
+            feature = feat[i][:, j:]
+            ac, mc = classifica(feature, rotulos, num_classes,
+                                tam_classe, tam_teste)
+            if (ac > acc_bwd[i]):
+                acc_bwd[i] = ac
+                N_feat_bwd[i] = -j+30
+                m_confs_bwd[i] = mc
+#            else:
+#                break
+
+    return acc_bwd, N_feat_bwd, m_confs_bwd
+# =========================================================
 
 
 # lista com os nomes dos arquivos

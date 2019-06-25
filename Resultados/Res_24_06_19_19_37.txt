@@ -1,0 +1,30 @@
+Acuracia media: 100 rodadas
+Acuracia:  0.3414
+Conjunto de atributos:  [freq, mX,mX^2]
+-------------------------------------------------------------------------------- 
+
+Acuracia media: 100 rodadas
+Acuracia:  0.4875
+Conjunto de atributos:  [freq, mX]
+-------------------------------------------------------------------------------- 
+
+Acuracia media: 100 rodadas
+Acuracia:  0.3350
+Conjunto de atributos:  [freq, mX^2]
+-------------------------------------------------------------------------------- 
+
+Acuracia media: 100 rodadas
+Acuracia:  0.3368
+Conjunto de atributos:  [mX, mX^2]
+-------------------------------------------------------------------------------- 
+
+Acuracia media: 100 rodadas
+Acuracia:  0.4910
+Conjunto de atributos:  [freq, mX, ph]
+-------------------------------------------------------------------------------- 
+
+Acuracia media: 100 rodadas
+Acuracia:  0.3326
+Conjunto de atributos:  [freq, mX, ph, mX^2]
+-------------------------------------------------------------------------------- 
+
